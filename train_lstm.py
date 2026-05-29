@@ -57,6 +57,7 @@ def main():
     parser.add_argument("--checkpoint_dir", default="checkpoints")
     args = parser.parse_args()
 
+    torch.backends.cudnn.enabled = False
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
 
