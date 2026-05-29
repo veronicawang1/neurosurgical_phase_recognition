@@ -1,0 +1,505 @@
+frame index,label
+0,Parent Vessel Identification
+1,Parent Vessel Identification
+2,Parent Vessel Identification
+3,Parent Vessel Identification
+4,Parent Vessel Identification
+5,Parent Vessel Identification
+6,Clipping
+7,Clipping
+8,Clipping
+9,Clipping
+10,Clipping
+11,Clipping
+12,Clipping
+13,Clipping
+14,Clipping
+15,Clipping
+16,Clipping
+17,Clipping
+18,Clipping
+19,Clipping
+20,Clipping
+21,Clipping
+22,Clipping
+23,Clipping
+24,Clipping
+25,Clipping
+26,Clipping
+27,Clipping
+28,Clipping
+29,Clipping
+30,Clipping
+31,Neck Identification
+32,Neck Identification
+33,Neck Identification
+34,Neck Identification
+35,Neck Identification
+36,Neck Identification
+37,Neck Identification
+38,Neck Identification
+39,Neck Identification
+40,Neck Identification
+41,Neck Identification
+42,Neck Identification
+43,Neck Identification
+44,Neck Identification
+45,Neck Identification
+46,Neck Identification
+47,Neck Identification
+48,Neck Identification
+49,Neck Identification
+50,Neck Identification
+51,Neck Identification
+52,Neck Identification
+53,Neck Identification
+54,Neck Identification
+55,Neck Identification
+56,Neck Identification
+57,Neck Identification
+58,Neck Identification
+59,Neck Identification
+60,Neck Identification
+61,Neck Identification
+62,Neck Identification
+63,Neck Identification
+64,Neck Identification
+65,Neck Identification
+66,Neck Identification
+67,Neck Identification
+68,Neck Identification
+69,Neck Identification
+70,Neck Identification
+71,Neck Identification
+72,Neck Identification
+73,Neck Identification
+74,Neck Identification
+75,Neck Identification
+76,Neck Identification
+77,Neck Identification
+78,Neck Identification
+79,Neck Identification
+80,Neck Identification
+81,Neck Identification
+82,Neck Identification
+83,Neck Identification
+84,Neck Identification
+85,Neck Identification
+86,Neck Identification
+87,Neck Identification
+88,Neck Identification
+89,Neck Identification
+90,Neck Identification
+91,Neck Identification
+92,Neck Identification
+93,Neck Identification
+94,Neck Identification
+95,Neck Identification
+96,Neck Identification
+97,Neck Identification
+98,Neck Identification
+99,Neck Identification
+100,Neck Identification
+101,Neck Identification
+102,Neck Identification
+103,Neck Identification
+104,Neck Identification
+105,Neck Identification
+106,Neck Identification
+107,Neck Identification
+108,Neck Identification
+109,Neck Identification
+110,Neck Identification
+111,Neck Identification
+112,Neck Identification
+113,Neck Identification
+114,Neck Identification
+115,Neck Identification
+116,Neck Identification
+117,Neck Identification
+118,Neck Identification
+119,Neck Identification
+120,Neck Identification
+121,Neck Identification
+122,Neck Identification
+123,Neck Identification
+124,Neck Identification
+125,Neck Identification
+126,Neck Identification
+127,Neck Identification
+128,Neck Identification
+129,Neck Identification
+130,Neck Identification
+131,Neck Identification
+132,Neck Identification
+133,Neck Identification
+134,Neck Identification
+135,Neck Identification
+136,Neck Identification
+137,Neck Identification
+138,Neck Identification
+139,Neck Identification
+140,Neck Identification
+141,Neck Identification
+142,Neck Identification
+143,Neck Identification
+144,Neck Identification
+145,Neck Identification
+146,Neck Identification
+147,Neck Identification
+148,Neck Identification
+149,Neck Identification
+150,Neck Identification
+151,Neck Identification
+152,Neck Identification
+153,Neck Identification
+154,Neck Identification
+155,Neck Identification
+156,Neck Identification
+157,Neck Identification
+158,Neck Identification
+159,Neck Identification
+160,Neck Identification
+161,Neck Identification
+162,Neck Identification
+163,Neck Identification
+164,Neck Identification
+165,Neck Identification
+166,Neck Identification
+167,Neck Identification
+168,Neck Identification
+169,Neck Identification
+170,Neck Identification
+171,Neck Identification
+172,Neck Identification
+173,Neck Identification
+174,Neck Identification
+175,Neck Identification
+176,Neck Identification
+177,Neck Identification
+178,Neck Identification
+179,Neck Identification
+180,Neck Identification
+181,Neck Identification
+182,Neck Identification
+183,Neck Identification
+184,Neck Identification
+185,Neck Identification
+186,Neck Identification
+187,Neck Identification
+188,Neck Identification
+189,Neck Identification
+190,Neck Identification
+191,Neck Identification
+192,Neck Identification
+193,Neck Identification
+194,Neck Identification
+195,Neck Identification
+196,Neck Identification
+197,Neck Identification
+198,Neck Identification
+199,Neck Identification
+200,Neck Identification
+201,Neck Identification
+202,Neck Identification
+203,Neck Identification
+204,Neck Identification
+205,Neck Identification
+206,Neck Identification
+207,Neck Identification
+208,Clipping
+209,Clipping
+210,Clipping
+211,Clipping
+212,Clipping
+213,Clipping
+214,Clipping
+215,Clipping
+216,Clipping
+217,Clipping
+218,Clipping
+219,Clipping
+220,Clipping
+221,Clipping
+222,Clipping
+223,Clipping
+224,Clipping
+225,Clipping
+226,Clipping
+227,Clipping
+228,Clipping
+229,Clipping
+230,Clipping
+231,Clipping
+232,Clipping
+233,Clipping
+234,Clipping
+235,Clipping
+236,Clipping
+237,Clipping
+238,Clipping
+239,Clipping
+240,Clipping
+241,Clipping
+242,Clipping
+243,Clipping
+244,Clipping
+245,Clipping
+246,Clipping
+247,Clipping
+248,Clipping
+249,Clipping
+250,Clipping
+251,Clipping
+252,Clipping
+253,Clipping
+254,Dome Identification
+255,Dome Identification
+256,Dome Identification
+257,Dome Identification
+258,Dome Identification
+259,Dome Identification
+260,Dome Identification
+261,Dome Identification
+262,Dome Identification
+263,Dome Identification
+264,Dome Identification
+265,Dome Identification
+266,Dome Identification
+267,Dome Identification
+268,Dome Identification
+269,Dome Identification
+270,Dome Identification
+271,Dome Identification
+272,Dome Identification
+273,Dome Identification
+274,Dome Identification
+275,Dome Identification
+276,Dome Identification
+277,Dome Identification
+278,Dome Identification
+279,Dome Identification
+280,Dome Identification
+281,Dome Identification
+282,Dome Identification
+283,Dome Identification
+284,Dome Identification
+285,Dome Identification
+286,Dome Identification
+287,Dome Identification
+288,Dome Identification
+289,Dome Identification
+290,Dome Identification
+291,Dome Identification
+292,Dome Identification
+293,Dome Identification
+294,Clipping
+295,Clipping
+296,Clipping
+297,Clipping
+298,Clipping
+299,Clipping
+300,Clipping
+301,Clipping
+302,Clipping
+303,Clipping
+304,Clipping
+305,Clipping
+306,Clipping
+307,Clipping
+308,Clipping
+309,Clipping
+310,Clipping
+311,Clipping
+312,Clipping
+313,Clipping
+314,Clipping
+315,Clipping
+316,Clipping
+317,Clipping
+318,Clipping
+319,Clipping
+320,Clipping
+321,Clipping
+322,Clipping
+323,Clipping
+324,Clipping
+325,Clipping
+326,Clipping
+327,Clipping
+328,Clipping
+329,Clipping
+330,Clipping
+331,Clipping
+332,Clipping
+333,Clipping
+334,Clipping
+335,Clipping
+336,Clipping
+337,Clipping
+338,Clipping
+339,Clipping
+340,Clipping
+341,Clipping
+342,Clipping
+343,Clipping
+344,Clipping
+345,Clipping
+346,Clipping
+347,Clipping
+348,Clipping
+349,Clipping
+350,Clipping
+351,Clipping
+352,Clipping
+353,Clipping
+354,Clipping
+355,Clipping
+356,Clipping
+357,Clipping
+358,Clipping
+359,Clipping
+360,Clipping
+361,Clipping
+362,Clipping
+363,Clipping
+364,Clipping
+365,Clipping
+366,Clipping
+367,Clipping
+368,Clipping
+369,Clipping
+370,Clipping
+371,Clipping
+372,Clipping
+373,Clipping
+374,Clipping
+375,Clipping
+376,Clipping
+377,Clipping
+378,Clipping
+379,Clipping
+380,Clipping
+381,Clipping
+382,Clipping
+383,Clipping
+384,Clipping
+385,Clipping
+386,Clipping
+387,Clipping
+388,Clipping
+389,Clipping
+390,Clipping
+391,Clipping
+392,Clipping
+393,Clipping
+394,Clipping
+395,Clipping
+396,Clipping
+397,Clipping
+398,Clipping
+399,Clipping
+400,Clipping
+401,Clipping
+402,Clipping
+403,Clipping
+404,Clipping
+405,Clipping
+406,Clipping
+407,Clipping
+408,Clipping
+409,Clipping
+410,Clipping
+411,Clipping
+412,Clipping
+413,Clipping
+414,Clipping
+415,Clipping
+416,Clipping
+417,Clipping
+418,Clipping
+419,Clipping
+420,Clipping
+421,Clipping
+422,Clipping
+423,Clipping
+424,Clipping
+425,Clipping
+426,Clipping
+427,Clipping
+428,Clipping
+429,Clipping
+430,Clipping
+431,Clipping
+432,Clipping
+433,Clipping
+434,Clipping
+435,Clipping
+436,Clipping
+437,Clipping
+438,Clipping
+439,Clipping
+440,Clipping
+441,Clipping
+442,Clipping
+443,Clipping
+444,Clipping
+445,Clipping
+446,Clipping
+447,Clipping
+448,Clipping
+449,Clipping
+450,Clipping
+451,Clipping
+452,Clipping
+453,Clipping
+454,Clipping
+455,Clipping
+456,Clipping
+457,Clipping
+458,Clipping
+459,Clipping
+460,Clipping
+461,Clipping
+462,Clipping
+463,Clipping
+464,Clipping
+465,Clipping
+466,Clipping
+467,Clipping
+468,Clipping
+469,Clipping
+470,Clipping
+471,Clipping
+472,Clipping
+473,Clipping
+474,Clipping
+475,Clipping
+476,Clipping
+477,Clipping
+478,Clipping
+479,Clipping
+480,Clipping
+481,Clipping
+482,Clipping
+483,Clipping
+484,Clipping
+485,Clipping
+486,Clipping
+487,Clipping
+488,Clipping
+489,Clipping
+490,Clipping
+491,Clipping
+492,Clipping
+493,Clipping
+494,Clipping
+495,Clipping
+496,Clipping
+497,Clipping
+498,Clipping
+499,Clipping
+500,Clipping
+501,Clipping
+502,Clipping
+503,Clipping
