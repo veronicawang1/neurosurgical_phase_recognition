@@ -23,10 +23,10 @@ import torch
 # Define your class mapping here — order determines the integer index.
 CLASS_NAMES = [
     "Brain Exposure",
-    "Dura Opening",
-    "Tumor Resection",
-    "Hemostasis",
-    "Closure",
+    "Parent Vessel Identification",
+    "Neck Identification",
+    "Dome Identification",
+    "Clipping",
 ]
 CLASS_TO_IDX = {name: i for i, name in enumerate(CLASS_NAMES)}
 
@@ -42,10 +42,7 @@ def csv_to_label_tensor(csv_path: str) -> torch.Tensor:
         frame_idx = int(row["frame index"])
         label_str = str(row["label"]).strip()
         if label_str not in CLASS_TO_IDX:
-            raise ValueError(
-                f"Unknown label '{label_str}' in {csv_path}. "
-                f"Add it to CLASS_NAMES or fix the CSV."
-            )
+            continue  # ignore frames with out-of-scope labels (e.g. "Liquid B&W")
         labels[frame_idx] = CLASS_TO_IDX[label_str]
 
     return labels
