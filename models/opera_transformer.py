@@ -39,11 +39,11 @@ class NeuroOperA(nn.Module):
     def __init__(
         self,
         input_dim=2048,
-        d_model=512,
+        d_model=256,
         num_classes=5,
-        num_layers=6,
-        n_heads=8,
-        dropout=0.1,
+        num_layers=2,
+        n_heads=4,
+        dropout=0.3,
     ):
         super().__init__()
 
