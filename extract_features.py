@@ -8,14 +8,12 @@ from models.cnn_backbone import FrameBackbone
 
 VIDEO_DIR = "data/raw_videos"
 OUT_DIR = "data/features"
-CHECKPOINT = "checkpoints/backbone.pt"
 
 os.makedirs(OUT_DIR, exist_ok=True)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 model = FrameBackbone(num_classes=5).to(device)
-model.load_state_dict(torch.load(CHECKPOINT, map_location=device))
 model.eval()
 
 tfm = transforms.Compose([
