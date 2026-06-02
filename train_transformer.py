@@ -1,4 +1,5 @@
 import argparse
+import math
 import os
 import torch
 import torch.nn.functional as F
@@ -7,6 +8,16 @@ from torch.utils.data import DataLoader
 from data.dataset import FeatureDataset, collate_variable_length
 from data.splits import build_samples, train_val_split
 from models.opera_transformer import NeuroOperA
+from utils.class_weights import compute_class_weights
+
+
+CLASS_NAMES = [
+    "Brain Exposure",
+    "Parent Vessel ID",
+    "Neck ID",
+    "Dome ID",
+    "Clipping",
+]
 
 
 def _acc(logits, labels):
@@ -15,6 +26,19 @@ def _acc(logits, labels):
     mask = flat_labels != -100
     correct = (flat_logits[mask].argmax(1) == flat_labels[mask]).sum().item()
     return correct, mask.sum().item()
+
+
+def _per_class_acc(logits, labels, num_classes):
+    flat_logits = logits.reshape(-1, logits.shape[-1])
+    flat_labels = labels.reshape(-1)
+    preds = flat_logits.argmax(1)
+    correct = torch.zeros(num_classes)
+    total = torch.zeros(num_classes)
+    for c in range(num_classes):
+        mask = flat_labels == c
+        total[c] = mask.sum()
+        correct[c] = (preds[mask] == c).sum()
+    return correct, total
 
 
 def train_one_epoch(model, loader, optimizer, device, class_weights=None):
@@ -45,6 +69,9 @@ def train_one_epoch(model, loader, optimizer, device, class_weights=None):
 def eval_one_epoch(model, loader, device):
     model.eval()
     total_loss, correct, total = 0, 0, 0
+    num_classes = model.classifier.out_features
+    class_correct = torch.zeros(num_classes)
+    class_total = torch.zeros(num_classes)
     for features, labels, padding_mask in loader:
         features = features.to(device)
         labels = labels.to(device)
@@ -59,7 +86,14 @@ def eval_one_epoch(model, loader, device):
         c, n = _acc(logits, labels)
         correct += c
         total += n
-    return total_loss / len(loader), correct / total
+        cc, ct = _per_class_acc(logits.cpu(), labels.cpu(), num_classes)
+        class_correct += cc
+        class_total += ct
+    per_class = [
+        class_correct[c].item() / class_total[c].item() if class_total[c] > 0 else float("nan")
+        for c in range(num_classes)
+    ]
+    return total_loss / len(loader), correct / total, per_class
 
 
 def main():
@@ -83,6 +117,8 @@ def main():
     train_samples, val_samples = train_val_split(samples)
     print(f"Train: {len(train_samples)}  Val: {len(val_samples)}")
 
+    class_weights = compute_class_weights(train_samples, args.num_classes, device)
+
     train_loader = DataLoader(
         FeatureDataset(train_samples),
         batch_size=args.batch_size,
@@ -103,9 +139,12 @@ def main():
     best_val = float("inf")
 
     for epoch in range(1, args.epochs + 1):
-        train_loss, train_acc = train_one_epoch(model, train_loader, optimizer, device)
-        val_loss, val_acc = eval_one_epoch(model, val_loader, device)
+        train_loss, train_acc = train_one_epoch(model, train_loader, optimizer, device, class_weights=class_weights)
+        val_loss, val_acc, per_class = eval_one_epoch(model, val_loader, device)
         print(f"Epoch {epoch:03d}  train loss={train_loss:.4f} acc={train_acc:.3f}  val loss={val_loss:.4f} acc={val_acc:.3f}")
+        for name, acc in zip(CLASS_NAMES, per_class):
+            acc_str = f"{acc:.3f}" if not math.isnan(acc) else "n/a"
+            print(f"         {name:<25} {acc_str}")
 
         if val_loss < best_val:
             best_val = val_loss
