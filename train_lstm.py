@@ -1,4 +1,5 @@
 import argparse
+import math
 import os
 import torch
 import torch.nn.functional as F
@@ -8,6 +9,15 @@ from data.dataset import FeatureDataset, collate_variable_length
 from data.splits import build_samples, train_val_split
 from models.cnn_lstm import CnnLstm
 from utils.class_weights import compute_class_weights
+
+
+CLASS_NAMES = [
+    "Brain Exposure",
+    "Parent Vessel ID",
+    "Neck ID",
+    "Dome ID",
+    "Clipping",
+]
 
 
 def _acc(logits, labels):
@@ -20,9 +30,26 @@ def _acc(logits, labels):
     return correct, mask.sum().item()
 
 
-def run_epoch(model, loader, optimizer, device, train=True, class_weights=None):
+def _per_class_stats(logits, labels, num_classes):
+    flat_logits = logits.reshape(-1, logits.shape[-1])
+    flat_labels = labels.reshape(-1)
+    preds = flat_logits.argmax(1)
+    tp = torch.zeros(num_classes)
+    fp = torch.zeros(num_classes)
+    fn = torch.zeros(num_classes)
+    for c in range(num_classes):
+        tp[c] = ((preds == c) & (flat_labels == c)).sum()
+        fp[c] = ((preds == c) & (flat_labels != c)).sum()
+        fn[c] = ((preds != c) & (flat_labels == c)).sum()
+    return tp, fp, fn
+
+
+def run_epoch(model, loader, optimizer, device, train=True, class_weights=None, num_classes=5):
     model.train() if train else model.eval()
     total_loss, correct, total = 0, 0, 0
+    tp = torch.zeros(num_classes)
+    fp = torch.zeros(num_classes)
+    fn = torch.zeros(num_classes)
     ctx = torch.enable_grad() if train else torch.no_grad()
     with ctx:
         for features, labels, padding_mask in loader:
@@ -42,8 +69,22 @@ def run_epoch(model, loader, optimizer, device, train=True, class_weights=None):
             c, n = _acc(logits, labels)
             correct += c
             total += n
+            if not train:
+                btp, bfp, bfn = _per_class_stats(logits.cpu(), labels.cpu(), num_classes)
+                tp += btp
+                fp += bfp
+                fn += bfn
+
     acc = correct / total if total > 0 else 0.0
-    return total_loss / len(loader), acc
+    per_class = None
+    if not train:
+        per_class = []
+        for c in range(num_classes):
+            c_acc = tp[c].item() / (tp[c] + fn[c]).item() if (tp[c] + fn[c]) > 0 else float("nan")
+            denom = 2 * tp[c] + fp[c] + fn[c]
+            f1 = (2 * tp[c] / denom).item() if denom > 0 else float("nan")
+            per_class.append((c_acc, f1))
+    return total_loss / len(loader), acc, per_class
 
 
 def main():
@@ -92,9 +133,15 @@ def main():
     best_val = float("inf")
 
     for epoch in range(1, args.epochs + 1):
-        train_loss, train_acc = run_epoch(model, train_loader, optimizer, device, train=True, class_weights=class_weights)
-        val_loss, val_acc = run_epoch(model, val_loader, optimizer, device, train=False)
+        train_loss, train_acc, _ = run_epoch(model, train_loader, optimizer, device, train=True,
+                                              class_weights=class_weights, num_classes=args.num_classes)
+        val_loss, val_acc, per_class = run_epoch(model, val_loader, optimizer, device, train=False,
+                                                  num_classes=args.num_classes)
         print(f"Epoch {epoch:03d}  train loss={train_loss:.4f} acc={train_acc:.3f}  val loss={val_loss:.4f} acc={val_acc:.3f}")
+        for name, (acc, f1) in zip(CLASS_NAMES, per_class):
+            acc_str = f"{acc:.3f}" if not math.isnan(acc) else " n/a"
+            f1_str  = f"{f1:.3f}"  if not math.isnan(f1)  else " n/a"
+            print(f"    {name:<22} acc={acc_str}  f1={f1_str}")
         if val_loss < best_val:
             best_val = val_loss
             ckpt = os.path.join(args.checkpoint_dir, "best_lstm.pt")

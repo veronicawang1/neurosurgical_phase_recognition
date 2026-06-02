@@ -28,17 +28,18 @@ def _acc(logits, labels):
     return correct, mask.sum().item()
 
 
-def _per_class_acc(logits, labels, num_classes):
+def _per_class_stats(logits, labels, num_classes):
     flat_logits = logits.reshape(-1, logits.shape[-1])
     flat_labels = labels.reshape(-1)
     preds = flat_logits.argmax(1)
-    correct = torch.zeros(num_classes)
-    total = torch.zeros(num_classes)
+    tp = torch.zeros(num_classes)
+    fp = torch.zeros(num_classes)
+    fn = torch.zeros(num_classes)
     for c in range(num_classes):
-        mask = flat_labels == c
-        total[c] = mask.sum()
-        correct[c] = (preds[mask] == c).sum()
-    return correct, total
+        tp[c] = ((preds == c) & (flat_labels == c)).sum()
+        fp[c] = ((preds == c) & (flat_labels != c)).sum()
+        fn[c] = ((preds != c) & (flat_labels == c)).sum()
+    return tp, fp, fn
 
 
 def train_one_epoch(model, loader, optimizer, device, class_weights=None):
@@ -70,8 +71,9 @@ def eval_one_epoch(model, loader, device):
     model.eval()
     total_loss, correct, total = 0, 0, 0
     num_classes = model.classifier.out_features
-    class_correct = torch.zeros(num_classes)
-    class_total = torch.zeros(num_classes)
+    tp = torch.zeros(num_classes)
+    fp = torch.zeros(num_classes)
+    fn = torch.zeros(num_classes)
     for features, labels, padding_mask in loader:
         features = features.to(device)
         labels = labels.to(device)
@@ -86,13 +88,18 @@ def eval_one_epoch(model, loader, device):
         c, n = _acc(logits, labels)
         correct += c
         total += n
-        cc, ct = _per_class_acc(logits.cpu(), labels.cpu(), num_classes)
-        class_correct += cc
-        class_total += ct
-    per_class = [
-        class_correct[c].item() / class_total[c].item() if class_total[c] > 0 else float("nan")
-        for c in range(num_classes)
-    ]
+        btp, bfp, bfn = _per_class_stats(logits.cpu(), labels.cpu(), num_classes)
+        tp += btp
+        fp += bfp
+        fn += bfn
+
+    per_class = []
+    for c in range(num_classes):
+        acc = tp[c].item() / (tp[c] + fn[c]).item() if (tp[c] + fn[c]) > 0 else float("nan")
+        denom = 2 * tp[c] + fp[c] + fn[c]
+        f1 = (2 * tp[c] / denom).item() if denom > 0 else float("nan")
+        per_class.append((acc, f1))
+
     return total_loss / len(loader), correct / total, per_class
 
 
@@ -142,9 +149,10 @@ def main():
         train_loss, train_acc = train_one_epoch(model, train_loader, optimizer, device, class_weights=class_weights)
         val_loss, val_acc, per_class = eval_one_epoch(model, val_loader, device)
         print(f"Epoch {epoch:03d}  train loss={train_loss:.4f} acc={train_acc:.3f}  val loss={val_loss:.4f} acc={val_acc:.3f}")
-        for name, acc in zip(CLASS_NAMES, per_class):
-            acc_str = f"{acc:.3f}" if not math.isnan(acc) else "n/a"
-            print(f"         {name:<25} {acc_str}")
+        for name, (acc, f1) in zip(CLASS_NAMES, per_class):
+            acc_str = f"{acc:.3f}" if not math.isnan(acc) else " n/a"
+            f1_str  = f"{f1:.3f}"  if not math.isnan(f1)  else " n/a"
+            print(f"    {name:<22} acc={acc_str}  f1={f1_str}")
 
         if val_loss < best_val:
             best_val = val_loss
