@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader
 from data.dataset import FeatureDataset, collate_variable_length
 from data.splits import build_samples, train_val_split
 from models.cnn_lstm import CnnLstm
+from utils.class_weights import compute_class_weights
 
 
 def _acc(logits, labels):
@@ -19,7 +20,7 @@ def _acc(logits, labels):
     return correct, mask.sum().item()
 
 
-def run_epoch(model, loader, optimizer, device, train=True):
+def run_epoch(model, loader, optimizer, device, train=True, class_weights=None):
     model.train() if train else model.eval()
     total_loss, correct, total = 0, 0, 0
     ctx = torch.enable_grad() if train else torch.no_grad()
@@ -30,6 +31,7 @@ def run_epoch(model, loader, optimizer, device, train=True):
             loss = F.cross_entropy(
                 logits.reshape(-1, logits.shape[-1]),
                 labels.reshape(-1),
+                weight=class_weights if train else None,
                 ignore_index=-100,
             )
             if train:
@@ -67,6 +69,8 @@ def main():
     train_samples, val_samples = train_val_split(samples)
     print(f"Train: {len(train_samples)}  Val: {len(val_samples)}")
 
+    class_weights = compute_class_weights(train_samples, args.num_classes, device)
+
     train_loader = DataLoader(
         FeatureDataset(train_samples),
         batch_size=args.batch_size,
@@ -88,7 +92,7 @@ def main():
     best_val = float("inf")
 
     for epoch in range(1, args.epochs + 1):
-        train_loss, train_acc = run_epoch(model, train_loader, optimizer, device, train=True)
+        train_loss, train_acc = run_epoch(model, train_loader, optimizer, device, train=True, class_weights=class_weights)
         val_loss, val_acc = run_epoch(model, val_loader, optimizer, device, train=False)
         print(f"Epoch {epoch:03d}  train loss={train_loss:.4f} acc={train_acc:.3f}  val loss={val_loss:.4f} acc={val_acc:.3f}")
         if val_loss < best_val:
