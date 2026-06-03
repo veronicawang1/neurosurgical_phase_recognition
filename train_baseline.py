@@ -38,7 +38,7 @@ def main():
     parser.add_argument("--epochs", type=int, default=1)
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--lr", type=float, default=1e-4)
-    parser.add_argument("--num_classes", type=int, default=5)
+    parser.add_argument("--num_classes", type=int, default=4)
     parser.add_argument("--checkpoint_dir", default="checkpoints")
     args = parser.parse_args()
 

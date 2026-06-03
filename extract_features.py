@@ -14,7 +14,7 @@ torch.backends.cudnn.enabled = False
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 
-model = FrameBackbone(num_classes=5).to(device)
+model = FrameBackbone(num_classes=4).to(device)
 model.eval()
 
 tfm = transforms.Compose([

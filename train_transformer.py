@@ -14,8 +14,7 @@ from utils.class_weights import compute_class_weights
 CLASS_NAMES = [
     "Brain Exposure",
     "Parent Vessel ID",
-    "Neck ID",
-    "Dome ID",
+    "Dome and Neck ID",
     "Clipping",
 ]
 
@@ -110,7 +109,7 @@ def main():
     parser.add_argument("--epochs", type=int, default=30)
     parser.add_argument("--batch_size", type=int, default=4)
     parser.add_argument("--lr", type=float, default=1e-4)
-    parser.add_argument("--num_classes", type=int, default=5)
+    parser.add_argument("--num_classes", type=int, default=4)
     parser.add_argument("--checkpoint_dir", default="checkpoints")
     args = parser.parse_args()
 

@@ -24,11 +24,12 @@ import torch
 CLASS_NAMES = [
     "Brain Exposure",
     "Parent Vessel Identification",
-    "Neck Identification",
-    "Dome Identification",
+    "Dome and Neck Identification",
     "Clipping",
 ]
 CLASS_TO_IDX = {name: i for i, name in enumerate(CLASS_NAMES)}
+CLASS_TO_IDX["Neck Identification"] = 2
+CLASS_TO_IDX["Dome Identification"] = 2
 
 
 def csv_to_label_tensor(csv_path: str) -> torch.Tensor:
