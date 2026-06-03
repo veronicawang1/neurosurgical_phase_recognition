@@ -5,6 +5,7 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
+from data.augmentation import AugmentedFeatureDataset
 from data.dataset import FeatureDataset, collate_variable_length
 from data.splits import build_samples, train_val_split
 from models.opera_transformer import NeuroOperA
@@ -112,6 +113,7 @@ def main():
     parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--num_classes", type=int, default=5)
     parser.add_argument("--checkpoint_dir", default="checkpoints")
+    parser.add_argument("--augment", action="store_true", help="Enable data augmentation")
     args = parser.parse_args()
 
     torch.backends.cudnn.enabled = False
@@ -126,8 +128,12 @@ def main():
 
     class_weights = compute_class_weights(train_samples, args.num_classes, device)
 
+    train_dataset = (AugmentedFeatureDataset(train_samples) if args.augment
+                     else FeatureDataset(train_samples))
+    if args.augment:
+        print("Data augmentation: ON (temporal crop + gaussian noise)")
     train_loader = DataLoader(
-        FeatureDataset(train_samples),
+        train_dataset,
         batch_size=args.batch_size,
         shuffle=True,
         collate_fn=collate_variable_length,
