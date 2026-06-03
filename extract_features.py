@@ -41,6 +41,11 @@ with torch.no_grad():
         step = max(1, int(round(fps)))
         expected = total_frames // step
 
+        if os.path.exists(os.path.join(OUT_DIR, out_name)):
+            print(f"[{vid_idx}/{len(video_files)}] {fname}  skipping (already extracted)")
+            cap.release()
+            continue
+
         print(f"[{vid_idx}/{len(video_files)}] {fname}  ({expected} frames to extract)")
 
         feats = []
