@@ -64,7 +64,7 @@ if len(all_feats) > MAX_SAMPLES:
     print(f"Subsampled to {MAX_SAMPLES} frames for t-SNE")
 
 print("Running t-SNE (this takes a few minutes)...")
-tsne = TSNE(n_components=2, perplexity=30, random_state=42, n_iter=1000)
+tsne = TSNE(n_components=2, perplexity=30, random_state=42)
 embedded = tsne.fit_transform(all_feats)
 
 print("Plotting...")
