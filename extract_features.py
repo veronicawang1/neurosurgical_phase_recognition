@@ -1,11 +1,20 @@
+import argparse
 import os
 import cv2
 import torch
 from torchvision import transforms
 from models.cnn_backbone import FrameBackbone
 
-VIDEO_DIR = "data/raw_videos"
-OUT_DIR = "data/features"
+parser = argparse.ArgumentParser()
+parser.add_argument("--checkpoint", default=None,
+                    help="Path to fine-tuned backbone checkpoint. "
+                         "If not provided, uses frozen ImageNet weights.")
+parser.add_argument("--video_dir", default="data/raw_videos")
+parser.add_argument("--out_dir", default="data/features")
+args = parser.parse_args()
+
+VIDEO_DIR = args.video_dir
+OUT_DIR = args.out_dir
 
 os.makedirs(OUT_DIR, exist_ok=True)
 
@@ -15,6 +24,11 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 
 model = FrameBackbone(num_classes=4).to(device)
+if args.checkpoint:
+    model.load_state_dict(torch.load(args.checkpoint, map_location=device))
+    print(f"Loaded fine-tuned checkpoint: {args.checkpoint}")
+else:
+    print("Using frozen ImageNet weights")
 model.eval()
 
 tfm = transforms.Compose([
