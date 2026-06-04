@@ -16,6 +16,7 @@ from data.dataset import FeatureDataset, collate_variable_length
 from data.splits import build_samples, train_val_split
 from utils.logger import RunLogger
 from utils.metrics import edit_distance, segmental_f1, apply_boundary_mask
+from utils.postprocess import viterbi_decode, temporal_smooth
 from models.opera_transformer import NeuroOperA
 from utils.class_weights import compute_class_weights
 
@@ -159,13 +160,14 @@ def run_val_windows(model, loader, device, num_classes):
 
 
 @torch.no_grad()
-def run_val_videos(model, loader, device, num_classes):
+def run_val_videos(model, loader, device, num_classes, smooth_window=15):
     model.eval()
     total_loss, correct, total = 0, 0, 0
     tp = torch.zeros(num_classes)
     fp = torch.zeros(num_classes)
     fn = torch.zeros(num_classes)
     all_preds, all_gts = [], []
+    viterbi_preds, smooth_preds = [], []
     for features, labels, padding_mask in loader:
         features = features.to(device)
         labels = labels.to(device)
@@ -182,15 +184,31 @@ def run_val_videos(model, loader, device, num_classes):
         mask = flat_labels != -100
         all_preds.extend(flat_preds[mask].tolist())
         all_gts.extend(flat_labels[mask].tolist())
+        # per-video post-processing
+        for b in range(features.shape[0]):
+            seq_labels = labels[b].cpu()
+            seq_logits = logits[b].cpu()
+            valid_mask = seq_labels != -100
+            if valid_mask.sum() == 0:
+                continue
+            probs = F.softmax(seq_logits[valid_mask], dim=-1).numpy()
+            viterbi_preds.extend(viterbi_decode(probs, None, num_classes).tolist())
+            smooth_preds.extend(temporal_smooth(probs, smooth_window).tolist())
     per_class = []
     for c in range(num_classes):
         c_acc = tp[c].item() / (tp[c] + fn[c]).item() if (tp[c] + fn[c]) > 0 else float("nan")
         denom = 2 * tp[c] + fp[c] + fn[c]
         f1 = (2 * tp[c] / denom).item() if denom > 0 else float("nan")
         per_class.append((c_acc, f1))
-    extra = {"edit_distance": round(edit_distance(all_preds, all_gts), 4),
-             "segmental_f1": segmental_f1(all_preds, all_gts),
-             "all_preds": all_preds, "all_gts": all_gts}
+    extra = {
+        "edit_distance": round(edit_distance(all_preds, all_gts), 4),
+        "segmental_f1": segmental_f1(all_preds, all_gts),
+        "viterbi_edit_dist": round(edit_distance(viterbi_preds, all_gts), 4),
+        "viterbi_seg_f1": segmental_f1(viterbi_preds, all_gts),
+        "smooth_edit_dist": round(edit_distance(smooth_preds, all_gts), 4),
+        "smooth_seg_f1": segmental_f1(smooth_preds, all_gts),
+        "all_preds": all_preds, "all_gts": all_gts,
+    }
     return total_loss / len(loader), correct / total if total > 0 else 0.0, per_class, extra
 
 
@@ -212,6 +230,7 @@ def main():
     parser.add_argument("--attn_reg_mode", choices=["entropy", "smooth"], default="entropy")
     parser.add_argument("--boundary_ignore_secs", type=int, default=5)
     parser.add_argument("--grad_clip", type=float, default=1.0)
+    parser.add_argument("--smooth_window", type=int, default=15)
     parser.add_argument("--label_smoothing", type=float, default=0.1)
     parser.add_argument("--warmup_epochs", type=int, default=5)
     args = parser.parse_args()
@@ -237,7 +256,8 @@ def main():
             batch_size=4, shuffle=False,
             collate_fn=collate_variable_length,
         )
-        val_fn = lambda m: run_val_videos(m, val_loader, device, args.num_classes)
+        val_fn = lambda m: run_val_videos(m, val_loader, device, args.num_classes,
+                                           smooth_window=args.smooth_window)
 
     else:
         dataset = WindowDataset(all_samples, window=args.window)
@@ -288,6 +308,11 @@ def main():
               f"seg_f1@10={extra['segmental_f1'][0.1]:.3f}  "
               f"seg_f1@25={extra['segmental_f1'][0.25]:.3f}  "
               f"seg_f1@50={extra['segmental_f1'][0.5]:.3f}")
+        if "viterbi_edit_dist" in extra:
+            print(f"    viterbi: edit={extra['viterbi_edit_dist']:.3f}  "
+                  f"seg_f1@10={extra['viterbi_seg_f1'][0.1]:.3f}")
+            print(f"    smooth:  edit={extra['smooth_edit_dist']:.3f}  "
+                  f"seg_f1@10={extra['smooth_seg_f1'][0.1]:.3f}")
         per_class_metrics = {}
         for name, (acc, f1) in zip(CLASS_NAMES, per_class):
             acc_str = f"{acc:.3f}" if not math.isnan(acc) else " n/a"

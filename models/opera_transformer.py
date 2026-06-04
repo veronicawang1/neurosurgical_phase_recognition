@@ -43,7 +43,7 @@ class NeuroOperA(nn.Module):
         num_classes=5,
         num_layers=2,
         n_heads=4,
-        dropout=0.3,
+        dropout=0.5,
     ):
         super().__init__()
 
