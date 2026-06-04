@@ -10,6 +10,7 @@ from data.dataset import FeatureDataset, collate_variable_length
 from data.splits import build_samples, train_val_split
 from models.opera_transformer import NeuroOperA
 from utils.class_weights import compute_class_weights
+from utils.logger import RunLogger
 
 
 CLASS_NAMES = [
@@ -113,6 +114,8 @@ def main():
     parser.add_argument("--num_classes", type=int, default=4)
     parser.add_argument("--checkpoint_dir", default="checkpoints")
     parser.add_argument("--augment", action="store_true", help="Enable data augmentation")
+    parser.add_argument("--log_dir", default="logs")
+    parser.add_argument("--run_name", default="transformer")
     args = parser.parse_args()
 
     torch.backends.cudnn.enabled = False
@@ -149,15 +152,22 @@ def main():
 
     os.makedirs(args.checkpoint_dir, exist_ok=True)
     best_val = float("inf")
+    logger = RunLogger(args.log_dir, args.run_name, vars(args))
 
     for epoch in range(1, args.epochs + 1):
         train_loss, train_acc = train_one_epoch(model, train_loader, optimizer, device, class_weights=class_weights)
         val_loss, val_acc, per_class = eval_one_epoch(model, val_loader, device)
         print(f"Epoch {epoch:03d}  train loss={train_loss:.4f} acc={train_acc:.3f}  val loss={val_loss:.4f} acc={val_acc:.3f}")
+        per_class_metrics = {}
         for name, (acc, f1) in zip(CLASS_NAMES, per_class):
             acc_str = f"{acc:.3f}" if not math.isnan(acc) else " n/a"
             f1_str  = f"{f1:.3f}"  if not math.isnan(f1)  else " n/a"
             print(f"    {name:<22} acc={acc_str}  f1={f1_str}")
+            per_class_metrics[name] = {"acc": None if math.isnan(acc) else round(acc, 4),
+                                       "f1": None if math.isnan(f1) else round(f1, 4)}
+        logger.log_epoch(epoch, {"train_loss": round(train_loss, 4), "train_acc": round(train_acc, 4),
+                                  "val_loss": round(val_loss, 4), "val_acc": round(val_acc, 4),
+                                  "per_class": per_class_metrics})
 
         if val_loss < best_val:
             best_val = val_loss

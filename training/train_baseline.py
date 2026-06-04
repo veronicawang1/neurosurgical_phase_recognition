@@ -5,6 +5,7 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader, random_split
 
 from models.cnn_backbone import FrameBackbone
+from utils.logger import RunLogger
 
 
 class FrameDataset(Dataset):
@@ -40,6 +41,8 @@ def main():
     parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--num_classes", type=int, default=4)
     parser.add_argument("--checkpoint_dir", default="checkpoints")
+    parser.add_argument("--log_dir", default="logs")
+    parser.add_argument("--run_name", default="baseline_cnn")
     args = parser.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -61,6 +64,8 @@ def main():
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
 
     os.makedirs(args.checkpoint_dir, exist_ok=True)
+    logger = RunLogger(args.log_dir, args.run_name, vars(args))
+    best_val = float("inf")
 
     for epoch in range(1, args.epochs + 1):
         model.train()
@@ -86,15 +91,19 @@ def main():
                 val_correct += (logits.argmax(1) == labels).sum().item()
                 val_total += labels.size(0)
 
-        print(
-            f"Epoch {epoch:03d} | "
-            f"train loss={train_loss/len(train_loader):.4f} acc={correct/total:.3f} | "
-            f"val loss={val_loss/len(val_loader):.4f} acc={val_correct/val_total:.3f}"
-        )
+        tl = train_loss / len(train_loader)
+        ta = correct / total
+        vl = val_loss / len(val_loader)
+        va = val_correct / val_total
+        print(f"Epoch {epoch:03d} | train loss={tl:.4f} acc={ta:.3f} | val loss={vl:.4f} acc={va:.3f}")
+        logger.log_epoch(epoch, {"train_loss": round(tl, 4), "train_acc": round(ta, 4),
+                                  "val_loss": round(vl, 4), "val_acc": round(va, 4)})
 
-    ckpt = os.path.join(args.checkpoint_dir, "baseline_cnn.pt")
-    torch.save(model.state_dict(), ckpt)
-    print(f"Saved {ckpt}")
+        if vl < best_val:
+            best_val = vl
+            ckpt = os.path.join(args.checkpoint_dir, "baseline_cnn.pt")
+            torch.save(model.state_dict(), ckpt)
+            print(f"  -> saved {ckpt}")
 
 
 if __name__ == "__main__":
