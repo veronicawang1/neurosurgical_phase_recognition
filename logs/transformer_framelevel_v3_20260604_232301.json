@@ -1,0 +1,3527 @@
+{
+  "run_name": "transformer_framelevel_v3",
+  "timestamp": "20260604_232301",
+  "hparams": {
+    "features_dir": "data/features",
+    "labels_dir": "data/labels",
+    "epochs": 100,
+    "batch_size": 16,
+    "lr": 0.0001,
+    "num_classes": 4,
+    "window": 64,
+    "checkpoint_dir": "checkpoints",
+    "val_split": "video",
+    "log_dir": "logs",
+    "run_name": "transformer_framelevel_v3",
+    "attn_reg_weight": 0.0,
+    "attn_reg_mode": "entropy",
+    "boundary_ignore_secs": 5,
+    "grad_clip": 1.0,
+    "smooth_window": 15,
+    "label_smoothing": 0.1,
+    "warmup_epochs": 5
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "epoch_time_s": 1.5,
+      "total_time_s": 1.5,
+      "train_loss": 1.4847,
+      "train_acc": 0.3129,
+      "val_loss": 1.4644,
+      "val_acc": 0.3203,
+      "edit_distance": 0.0073,
+      "segmental_f1": {
+        "0.1": 0.0034,
+        "0.25": 0.0026,
+        "0.5": 0.0009
+      },
+      "boundary_aware_acc": 0.3212,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.3564,
+          "f1": 0.3183
+        },
+        "Parent Vessel ID": {
+          "acc": 0.1962,
+          "f1": 0.1649
+        },
+        "Dome and Neck ID": {
+          "acc": 0.4029,
+          "f1": 0.4036
+        },
+        "Clipping": {
+          "acc": 0.1858,
+          "f1": 0.0384
+        }
+      }
+    },
+    {
+      "epoch": 2,
+      "epoch_time_s": 0.9,
+      "total_time_s": 2.5,
+      "train_loss": 1.2611,
+      "train_acc": 0.51,
+      "val_loss": 1.2853,
+      "val_acc": 0.3999,
+      "edit_distance": 0.0095,
+      "segmental_f1": {
+        "0.1": 0.0067,
+        "0.25": 0.0044,
+        "0.5": 0.0022
+      },
+      "boundary_aware_acc": 0.4004,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4318,
+          "f1": 0.4081
+        },
+        "Parent Vessel ID": {
+          "acc": 0.3439,
+          "f1": 0.2245
+        },
+        "Dome and Neck ID": {
+          "acc": 0.3925,
+          "f1": 0.4889
+        },
+        "Clipping": {
+          "acc": 0.3842,
+          "f1": 0.084
+        }
+      }
+    },
+    {
+      "epoch": 3,
+      "epoch_time_s": 1.0,
+      "total_time_s": 3.5,
+      "train_loss": 1.0285,
+      "train_acc": 0.656,
+      "val_loss": 1.1975,
+      "val_acc": 0.467,
+      "edit_distance": 0.0127,
+      "segmental_f1": {
+        "0.1": 0.0118,
+        "0.25": 0.0103,
+        "0.5": 0.0059
+      },
+      "boundary_aware_acc": 0.4674,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5214,
+          "f1": 0.5563
+        },
+        "Parent Vessel ID": {
+          "acc": 0.3259,
+          "f1": 0.2212
+        },
+        "Dome and Neck ID": {
+          "acc": 0.5181,
+          "f1": 0.4075
+        },
+        "Clipping": {
+          "acc": 0.3766,
+          "f1": 0.096
+        }
+      }
+    },
+    {
+      "epoch": 4,
+      "epoch_time_s": 0.9,
+      "total_time_s": 4.4,
+      "train_loss": 0.8752,
+      "train_acc": 0.7452,
+      "val_loss": 1.1978,
+      "val_acc": 0.4468,
+      "edit_distance": 0.0176,
+      "segmental_f1": {
+        "0.1": 0.0163,
+        "0.25": 0.0143,
+        "0.5": 0.0102
+      },
+      "boundary_aware_acc": 0.4471,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5272,
+          "f1": 0.5638
+        },
+        "Parent Vessel ID": {
+          "acc": 0.3808,
+          "f1": 0.2582
+        },
+        "Dome and Neck ID": {
+          "acc": 0.3268,
+          "f1": 0.4445
+        },
+        "Clipping": {
+          "acc": 0.4936,
+          "f1": 0.0725
+        }
+      }
+    },
+    {
+      "epoch": 5,
+      "epoch_time_s": 0.9,
+      "total_time_s": 5.3,
+      "train_loss": 0.7851,
+      "train_acc": 0.8156,
+      "val_loss": 1.1007,
+      "val_acc": 0.4997,
+      "edit_distance": 0.0179,
+      "segmental_f1": {
+        "0.1": 0.0186,
+        "0.25": 0.0165,
+        "0.5": 0.0103
+      },
+      "boundary_aware_acc": 0.5003,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.544,
+          "f1": 0.5615
+        },
+        "Parent Vessel ID": {
+          "acc": 0.4368,
+          "f1": 0.2839
+        },
+        "Dome and Neck ID": {
+          "acc": 0.4962,
+          "f1": 0.4325
+        },
+        "Clipping": {
+          "acc": 0.3511,
+          "f1": 0.0925
+        }
+      }
+    },
+    {
+      "epoch": 6,
+      "epoch_time_s": 0.9,
+      "total_time_s": 6.2,
+      "train_loss": 0.7061,
+      "train_acc": 0.8593,
+      "val_loss": 1.1888,
+      "val_acc": 0.4654,
+      "edit_distance": 0.0171,
+      "segmental_f1": {
+        "0.1": 0.0197,
+        "0.25": 0.0138,
+        "0.5": 0.0079
+      },
+      "boundary_aware_acc": 0.465,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4681,
+          "f1": 0.626
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5732,
+          "f1": 0.3579
+        },
+        "Dome and Neck ID": {
+          "acc": 0.3354,
+          "f1": 0.3221
+        },
+        "Clipping": {
+          "acc": 0.4707,
+          "f1": 0.07
+        }
+      }
+    },
+    {
+      "epoch": 7,
+      "epoch_time_s": 0.9,
+      "total_time_s": 7.1,
+      "train_loss": 0.6796,
+      "train_acc": 0.8777,
+      "val_loss": 1.3634,
+      "val_acc": 0.3869,
+      "edit_distance": 0.0145,
+      "segmental_f1": {
+        "0.1": 0.0151,
+        "0.25": 0.0084,
+        "0.5": 0.0034
+      },
+      "boundary_aware_acc": 0.3863,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.3797,
+          "f1": 0.5472
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6452,
+          "f1": 0.3738
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0918,
+          "f1": 0.1551
+        },
+        "Clipping": {
+          "acc": 0.4835,
+          "f1": 0.0535
+        }
+      }
+    },
+    {
+      "epoch": 8,
+      "epoch_time_s": 0.9,
+      "total_time_s": 8.1,
+      "train_loss": 0.6278,
+      "train_acc": 0.9298,
+      "val_loss": 1.4157,
+      "val_acc": 0.416,
+      "edit_distance": 0.0172,
+      "segmental_f1": {
+        "0.1": 0.0169,
+        "0.25": 0.0169,
+        "0.5": 0.0021
+      },
+      "boundary_aware_acc": 0.4149,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.2998,
+          "f1": 0.4608
+        },
+        "Parent Vessel ID": {
+          "acc": 0.8184,
+          "f1": 0.3543
+        },
+        "Dome and Neck ID": {
+          "acc": 0.2245,
+          "f1": 0.2451
+        },
+        "Clipping": {
+          "acc": 0.4351,
+          "f1": 0.1014
+        }
+      }
+    },
+    {
+      "epoch": 9,
+      "epoch_time_s": 1.0,
+      "total_time_s": 9.1,
+      "train_loss": 0.5906,
+      "train_acc": 0.9454,
+      "val_loss": 1.0276,
+      "val_acc": 0.5329,
+      "edit_distance": 0.0152,
+      "segmental_f1": {
+        "0.1": 0.0159,
+        "0.25": 0.0141,
+        "0.5": 0.0035
+      },
+      "boundary_aware_acc": 0.5338,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4517,
+          "f1": 0.6163
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6636,
+          "f1": 0.3466
+        },
+        "Dome and Neck ID": {
+          "acc": 0.6227,
+          "f1": 0.4705
+        },
+        "Clipping": {
+          "acc": 0.2646,
+          "f1": 0.0757
+        }
+      }
+    },
+    {
+      "epoch": 10,
+      "epoch_time_s": 0.8,
+      "total_time_s": 9.9,
+      "train_loss": 0.5797,
+      "train_acc": 0.9509,
+      "val_loss": 1.0762,
+      "val_acc": 0.5236,
+      "edit_distance": 0.0185,
+      "segmental_f1": {
+        "0.1": 0.0192,
+        "0.25": 0.0171,
+        "0.5": 0.0149
+      },
+      "boundary_aware_acc": 0.5233,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5315,
+          "f1": 0.6592
+        },
+        "Parent Vessel ID": {
+          "acc": 0.4816,
+          "f1": 0.3159
+        },
+        "Dome and Neck ID": {
+          "acc": 0.589,
+          "f1": 0.4556
+        },
+        "Clipping": {
+          "acc": 0.3308,
+          "f1": 0.0646
+        }
+      }
+    },
+    {
+      "epoch": 11,
+      "epoch_time_s": 0.9,
+      "total_time_s": 10.8,
+      "train_loss": 0.5635,
+      "train_acc": 0.9648,
+      "val_loss": 1.2586,
+      "val_acc": 0.4493,
+      "edit_distance": 0.0172,
+      "segmental_f1": {
+        "0.1": 0.0179,
+        "0.25": 0.0119,
+        "0.5": 0.004
+      },
+      "boundary_aware_acc": 0.449,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4437,
+          "f1": 0.6107
+        },
+        "Parent Vessel ID": {
+          "acc": 0.7134,
+          "f1": 0.3677
+        },
+        "Dome and Neck ID": {
+          "acc": 0.156,
+          "f1": 0.2635
+        },
+        "Clipping": {
+          "acc": 0.4809,
+          "f1": 0.0656
+        }
+      }
+    },
+    {
+      "epoch": 12,
+      "epoch_time_s": 1.0,
+      "total_time_s": 11.8,
+      "train_loss": 0.5532,
+      "train_acc": 0.9715,
+      "val_loss": 1.2591,
+      "val_acc": 0.4465,
+      "edit_distance": 0.0222,
+      "segmental_f1": {
+        "0.1": 0.023,
+        "0.25": 0.0204,
+        "0.5": 0.0153
+      },
+      "boundary_aware_acc": 0.4464,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5454,
+          "f1": 0.6575
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5008,
+          "f1": 0.2722
+        },
+        "Dome and Neck ID": {
+          "acc": 0.156,
+          "f1": 0.2535
+        },
+        "Clipping": {
+          "acc": 0.4427,
+          "f1": 0.0677
+        }
+      }
+    },
+    {
+      "epoch": 13,
+      "epoch_time_s": 0.9,
+      "total_time_s": 12.7,
+      "train_loss": 0.5437,
+      "train_acc": 0.9735,
+      "val_loss": 1.198,
+      "val_acc": 0.4505,
+      "edit_distance": 0.013,
+      "segmental_f1": {
+        "0.1": 0.0135,
+        "0.25": 0.009,
+        "0.5": 0.003
+      },
+      "boundary_aware_acc": 0.4505,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4429,
+          "f1": 0.6088
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6046,
+          "f1": 0.3865
+        },
+        "Dome and Neck ID": {
+          "acc": 0.2954,
+          "f1": 0.3619
+        },
+        "Clipping": {
+          "acc": 0.4377,
+          "f1": 0.0521
+        }
+      }
+    },
+    {
+      "epoch": 14,
+      "epoch_time_s": 0.9,
+      "total_time_s": 13.6,
+      "train_loss": 0.5468,
+      "train_acc": 0.9725,
+      "val_loss": 1.2531,
+      "val_acc": 0.4679,
+      "edit_distance": 0.0118,
+      "segmental_f1": {
+        "0.1": 0.0131,
+        "0.25": 0.0102,
+        "0.5": 0.0058
+      },
+      "boundary_aware_acc": 0.4685,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4913,
+          "f1": 0.6377
+        },
+        "Parent Vessel ID": {
+          "acc": 0.4117,
+          "f1": 0.2939
+        },
+        "Dome and Neck ID": {
+          "acc": 0.4943,
+          "f1": 0.3717
+        },
+        "Clipping": {
+          "acc": 0.3791,
+          "f1": 0.062
+        }
+      }
+    },
+    {
+      "epoch": 15,
+      "epoch_time_s": 0.9,
+      "total_time_s": 14.5,
+      "train_loss": 0.5295,
+      "train_acc": 0.9787,
+      "val_loss": 1.2496,
+      "val_acc": 0.4545,
+      "edit_distance": 0.0216,
+      "segmental_f1": {
+        "0.1": 0.0224,
+        "0.25": 0.0199,
+        "0.5": 0.0124
+      },
+      "boundary_aware_acc": 0.4546,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5278,
+          "f1": 0.6568
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5787,
+          "f1": 0.3092
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1403,
+          "f1": 0.2392
+        },
+        "Clipping": {
+          "acc": 0.4707,
+          "f1": 0.069
+        }
+      }
+    },
+    {
+      "epoch": 16,
+      "epoch_time_s": 0.9,
+      "total_time_s": 15.4,
+      "train_loss": 0.5253,
+      "train_acc": 0.9795,
+      "val_loss": 1.2937,
+      "val_acc": 0.4457,
+      "edit_distance": 0.0176,
+      "segmental_f1": {
+        "0.1": 0.0173,
+        "0.25": 0.013,
+        "0.5": 0.0065
+      },
+      "boundary_aware_acc": 0.4465,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.504,
+          "f1": 0.6574
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6025,
+          "f1": 0.3394
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1256,
+          "f1": 0.2221
+        },
+        "Clipping": {
+          "acc": 0.4809,
+          "f1": 0.0603
+        }
+      }
+    },
+    {
+      "epoch": 17,
+      "epoch_time_s": 1.0,
+      "total_time_s": 16.4,
+      "train_loss": 0.5176,
+      "train_acc": 0.9872,
+      "val_loss": 1.2135,
+      "val_acc": 0.484,
+      "edit_distance": 0.02,
+      "segmental_f1": {
+        "0.1": 0.0231,
+        "0.25": 0.0162,
+        "0.5": 0.0046
+      },
+      "boundary_aware_acc": 0.4842,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4468,
+          "f1": 0.6149
+        },
+        "Parent Vessel ID": {
+          "acc": 0.8787,
+          "f1": 0.3586
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1346,
+          "f1": 0.2227
+        },
+        "Clipping": {
+          "acc": 0.4148,
+          "f1": 0.0996
+        }
+      }
+    },
+    {
+      "epoch": 18,
+      "epoch_time_s": 0.9,
+      "total_time_s": 17.3,
+      "train_loss": 0.5083,
+      "train_acc": 0.9869,
+      "val_loss": 1.4649,
+      "val_acc": 0.4093,
+      "edit_distance": 0.0208,
+      "segmental_f1": {
+        "0.1": 0.0168,
+        "0.25": 0.0144,
+        "0.5": 0.0072
+      },
+      "boundary_aware_acc": 0.4097,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4648,
+          "f1": 0.6281
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6314,
+          "f1": 0.2759
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0152,
+          "f1": 0.0295
+        },
+        "Clipping": {
+          "acc": 0.4784,
+          "f1": 0.0877
+        }
+      }
+    },
+    {
+      "epoch": 19,
+      "epoch_time_s": 0.9,
+      "total_time_s": 18.2,
+      "train_loss": 0.5031,
+      "train_acc": 0.9883,
+      "val_loss": 1.1766,
+      "val_acc": 0.4831,
+      "edit_distance": 0.02,
+      "segmental_f1": {
+        "0.1": 0.023,
+        "0.25": 0.0207,
+        "0.5": 0.0115
+      },
+      "boundary_aware_acc": 0.4845,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4966,
+          "f1": 0.6495
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6293,
+          "f1": 0.3363
+        },
+        "Dome and Neck ID": {
+          "acc": 0.295,
+          "f1": 0.3021
+        },
+        "Clipping": {
+          "acc": 0.4326,
+          "f1": 0.0828
+        }
+      }
+    },
+    {
+      "epoch": 20,
+      "epoch_time_s": 0.9,
+      "total_time_s": 19.1,
+      "train_loss": 0.4986,
+      "train_acc": 0.9893,
+      "val_loss": 1.2056,
+      "val_acc": 0.4681,
+      "edit_distance": 0.0256,
+      "segmental_f1": {
+        "0.1": 0.0294,
+        "0.25": 0.0235,
+        "0.5": 0.0147
+      },
+      "boundary_aware_acc": 0.4687,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.497,
+          "f1": 0.6534
+        },
+        "Parent Vessel ID": {
+          "acc": 0.7347,
+          "f1": 0.362
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1004,
+          "f1": 0.1179
+        },
+        "Clipping": {
+          "acc": 0.4555,
+          "f1": 0.0915
+        }
+      }
+    },
+    {
+      "epoch": 21,
+      "epoch_time_s": 0.9,
+      "total_time_s": 20.0,
+      "train_loss": 0.5031,
+      "train_acc": 0.9896,
+      "val_loss": 1.3322,
+      "val_acc": 0.4583,
+      "edit_distance": 0.0164,
+      "segmental_f1": {
+        "0.1": 0.017,
+        "0.25": 0.0133,
+        "0.5": 0.0076
+      },
+      "boundary_aware_acc": 0.4599,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4743,
+          "f1": 0.553
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5075,
+          "f1": 0.2795
+        },
+        "Dome and Neck ID": {
+          "acc": 0.3801,
+          "f1": 0.4932
+        },
+        "Clipping": {
+          "acc": 0.3791,
+          "f1": 0.0689
+        }
+      }
+    },
+    {
+      "epoch": 22,
+      "epoch_time_s": 0.9,
+      "total_time_s": 20.9,
+      "train_loss": 0.504,
+      "train_acc": 0.9916,
+      "val_loss": 1.3758,
+      "val_acc": 0.4457,
+      "edit_distance": 0.0173,
+      "segmental_f1": {
+        "0.1": 0.016,
+        "0.25": 0.014,
+        "0.5": 0.006
+      },
+      "boundary_aware_acc": 0.4465,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4839,
+          "f1": 0.6453
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5636,
+          "f1": 0.2548
+        },
+        "Dome and Neck ID": {
+          "acc": 0.2402,
+          "f1": 0.3377
+        },
+        "Clipping": {
+          "acc": 0.3537,
+          "f1": 0.0745
+        }
+      }
+    },
+    {
+      "epoch": 23,
+      "epoch_time_s": 0.9,
+      "total_time_s": 21.8,
+      "train_loss": 0.4976,
+      "train_acc": 0.993,
+      "val_loss": 1.3303,
+      "val_acc": 0.4374,
+      "edit_distance": 0.0277,
+      "segmental_f1": {
+        "0.1": 0.0254,
+        "0.25": 0.0254,
+        "0.5": 0.0159
+      },
+      "boundary_aware_acc": 0.4375,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5261,
+          "f1": 0.6563
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5862,
+          "f1": 0.2665
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0609,
+          "f1": 0.1118
+        },
+        "Clipping": {
+          "acc": 0.4453,
+          "f1": 0.0878
+        }
+      }
+    },
+    {
+      "epoch": 24,
+      "epoch_time_s": 0.9,
+      "total_time_s": 22.8,
+      "train_loss": 0.4944,
+      "train_acc": 0.9891,
+      "val_loss": 1.3855,
+      "val_acc": 0.4566,
+      "edit_distance": 0.0154,
+      "segmental_f1": {
+        "0.1": 0.0132,
+        "0.25": 0.0095,
+        "0.5": 0.0038
+      },
+      "boundary_aware_acc": 0.4565,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4804,
+          "f1": 0.6339
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6238,
+          "f1": 0.2764
+        },
+        "Dome and Neck ID": {
+          "acc": 0.2345,
+          "f1": 0.332
+        },
+        "Clipping": {
+          "acc": 0.3308,
+          "f1": 0.0751
+        }
+      }
+    },
+    {
+      "epoch": 25,
+      "epoch_time_s": 0.9,
+      "total_time_s": 23.7,
+      "train_loss": 0.5051,
+      "train_acc": 0.9872,
+      "val_loss": 1.3956,
+      "val_acc": 0.4354,
+      "edit_distance": 0.018,
+      "segmental_f1": {
+        "0.1": 0.0177,
+        "0.25": 0.0155,
+        "0.5": 0.0044
+      },
+      "boundary_aware_acc": 0.435,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.2992,
+          "f1": 0.4604
+        },
+        "Parent Vessel ID": {
+          "acc": 0.7941,
+          "f1": 0.3547
+        },
+        "Dome and Neck ID": {
+          "acc": 0.3578,
+          "f1": 0.3352
+        },
+        "Clipping": {
+          "acc": 0.3588,
+          "f1": 0.0914
+        }
+      }
+    },
+    {
+      "epoch": 26,
+      "epoch_time_s": 0.9,
+      "total_time_s": 24.6,
+      "train_loss": 0.4953,
+      "train_acc": 0.9917,
+      "val_loss": 1.2362,
+      "val_acc": 0.4653,
+      "edit_distance": 0.0267,
+      "segmental_f1": {
+        "0.1": 0.0306,
+        "0.25": 0.0245,
+        "0.5": 0.0153
+      },
+      "boundary_aware_acc": 0.4651,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5325,
+          "f1": 0.6698
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6406,
+          "f1": 0.3214
+        },
+        "Dome and Neck ID": {
+          "acc": 0.118,
+          "f1": 0.1947
+        },
+        "Clipping": {
+          "acc": 0.4224,
+          "f1": 0.0694
+        }
+      }
+    },
+    {
+      "epoch": 27,
+      "epoch_time_s": 0.9,
+      "total_time_s": 25.5,
+      "train_loss": 0.4987,
+      "train_acc": 0.9934,
+      "val_loss": 1.2274,
+      "val_acc": 0.5324,
+      "edit_distance": 0.0197,
+      "segmental_f1": {
+        "0.1": 0.0182,
+        "0.25": 0.0159,
+        "0.5": 0.0114
+      },
+      "boundary_aware_acc": 0.5331,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5315,
+          "f1": 0.67
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6695,
+          "f1": 0.3327
+        },
+        "Dome and Neck ID": {
+          "acc": 0.431,
+          "f1": 0.3953
+        },
+        "Clipping": {
+          "acc": 0.2519,
+          "f1": 0.0741
+        }
+      }
+    },
+    {
+      "epoch": 28,
+      "epoch_time_s": 0.9,
+      "total_time_s": 26.4,
+      "train_loss": 0.4955,
+      "train_acc": 0.9916,
+      "val_loss": 1.2189,
+      "val_acc": 0.4614,
+      "edit_distance": 0.0212,
+      "segmental_f1": {
+        "0.1": 0.022,
+        "0.25": 0.0195,
+        "0.5": 0.0122
+      },
+      "boundary_aware_acc": 0.4619,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5208,
+          "f1": 0.6659
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6079,
+          "f1": 0.3281
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1565,
+          "f1": 0.2519
+        },
+        "Clipping": {
+          "acc": 0.4631,
+          "f1": 0.066
+        }
+      }
+    },
+    {
+      "epoch": 29,
+      "epoch_time_s": 1.0,
+      "total_time_s": 27.4,
+      "train_loss": 0.4928,
+      "train_acc": 0.9941,
+      "val_loss": 1.3636,
+      "val_acc": 0.4465,
+      "edit_distance": 0.0283,
+      "segmental_f1": {
+        "0.1": 0.0274,
+        "0.25": 0.024,
+        "0.5": 0.0172
+      },
+      "boundary_aware_acc": 0.4469,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5266,
+          "f1": 0.6739
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6159,
+          "f1": 0.3198
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0618,
+          "f1": 0.1164
+        },
+        "Clipping": {
+          "acc": 0.4809,
+          "f1": 0.0681
+        }
+      }
+    },
+    {
+      "epoch": 30,
+      "epoch_time_s": 0.8,
+      "total_time_s": 28.3,
+      "train_loss": 0.4946,
+      "train_acc": 0.9938,
+      "val_loss": 1.209,
+      "val_acc": 0.5435,
+      "edit_distance": 0.0228,
+      "segmental_f1": {
+        "0.1": 0.0236,
+        "0.25": 0.0183,
+        "0.5": 0.0131
+      },
+      "boundary_aware_acc": 0.5442,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5341,
+          "f1": 0.6797
+        },
+        "Parent Vessel ID": {
+          "acc": 0.813,
+          "f1": 0.3425
+        },
+        "Dome and Neck ID": {
+          "acc": 0.3064,
+          "f1": 0.4282
+        },
+        "Clipping": {
+          "acc": 0.2901,
+          "f1": 0.088
+        }
+      }
+    },
+    {
+      "epoch": 31,
+      "epoch_time_s": 0.9,
+      "total_time_s": 29.2,
+      "train_loss": 0.4867,
+      "train_acc": 0.9953,
+      "val_loss": 1.3016,
+      "val_acc": 0.4532,
+      "edit_distance": 0.0324,
+      "segmental_f1": {
+        "0.1": 0.0332,
+        "0.25": 0.0258,
+        "0.5": 0.0185
+      },
+      "boundary_aware_acc": 0.4537,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5251,
+          "f1": 0.6668
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6067,
+          "f1": 0.3142
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1066,
+          "f1": 0.1268
+        },
+        "Clipping": {
+          "acc": 0.4809,
+          "f1": 0.0907
+        }
+      }
+    },
+    {
+      "epoch": 32,
+      "epoch_time_s": 0.9,
+      "total_time_s": 30.1,
+      "train_loss": 0.4831,
+      "train_acc": 0.9957,
+      "val_loss": 1.2778,
+      "val_acc": 0.4647,
+      "edit_distance": 0.0456,
+      "segmental_f1": {
+        "0.1": 0.0578,
+        "0.25": 0.0462,
+        "0.5": 0.0405
+      },
+      "boundary_aware_acc": 0.4652,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5169,
+          "f1": 0.6694
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6854,
+          "f1": 0.3414
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0894,
+          "f1": 0.1641
+        },
+        "Clipping": {
+          "acc": 0.4809,
+          "f1": 0.0728
+        }
+      }
+    },
+    {
+      "epoch": 33,
+      "epoch_time_s": 0.9,
+      "total_time_s": 31.1,
+      "train_loss": 0.4887,
+      "train_acc": 0.9932,
+      "val_loss": 1.1987,
+      "val_acc": 0.4881,
+      "edit_distance": 0.0209,
+      "segmental_f1": {
+        "0.1": 0.0217,
+        "0.25": 0.0169,
+        "0.5": 0.0096
+      },
+      "boundary_aware_acc": 0.4892,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5419,
+          "f1": 0.6793
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6255,
+          "f1": 0.3229
+        },
+        "Dome and Neck ID": {
+          "acc": 0.225,
+          "f1": 0.2377
+        },
+        "Clipping": {
+          "acc": 0.3919,
+          "f1": 0.0857
+        }
+      }
+    },
+    {
+      "epoch": 34,
+      "epoch_time_s": 0.9,
+      "total_time_s": 32.0,
+      "train_loss": 0.4946,
+      "train_acc": 0.995,
+      "val_loss": 1.3159,
+      "val_acc": 0.4695,
+      "edit_distance": 0.0353,
+      "segmental_f1": {
+        "0.1": 0.0361,
+        "0.25": 0.0321,
+        "0.5": 0.0201
+      },
+      "boundary_aware_acc": 0.4701,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5083,
+          "f1": 0.6627
+        },
+        "Parent Vessel ID": {
+          "acc": 0.769,
+          "f1": 0.3276
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0433,
+          "f1": 0.0823
+        },
+        "Clipping": {
+          "acc": 0.4453,
+          "f1": 0.0947
+        }
+      }
+    },
+    {
+      "epoch": 35,
+      "epoch_time_s": 0.9,
+      "total_time_s": 32.9,
+      "train_loss": 0.487,
+      "train_acc": 0.9957,
+      "val_loss": 1.365,
+      "val_acc": 0.4411,
+      "edit_distance": 0.0334,
+      "segmental_f1": {
+        "0.1": 0.038,
+        "0.25": 0.0266,
+        "0.5": 0.019
+      },
+      "boundary_aware_acc": 0.442,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4757,
+          "f1": 0.5542
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6544,
+          "f1": 0.325
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1151,
+          "f1": 0.2025
+        },
+        "Clipping": {
+          "acc": 0.458,
+          "f1": 0.0852
+        }
+      }
+    },
+    {
+      "epoch": 36,
+      "epoch_time_s": 0.8,
+      "total_time_s": 33.8,
+      "train_loss": 0.4857,
+      "train_acc": 0.9969,
+      "val_loss": 1.286,
+      "val_acc": 0.4488,
+      "edit_distance": 0.0308,
+      "segmental_f1": {
+        "0.1": 0.0351,
+        "0.25": 0.0281,
+        "0.5": 0.0246
+      },
+      "boundary_aware_acc": 0.4491,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5145,
+          "f1": 0.6635
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6531,
+          "f1": 0.3317
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0614,
+          "f1": 0.114
+        },
+        "Clipping": {
+          "acc": 0.4631,
+          "f1": 0.0678
+        }
+      }
+    },
+    {
+      "epoch": 37,
+      "epoch_time_s": 0.9,
+      "total_time_s": 34.7,
+      "train_loss": 0.4894,
+      "train_acc": 0.9958,
+      "val_loss": 1.3323,
+      "val_acc": 0.4461,
+      "edit_distance": 0.037,
+      "segmental_f1": {
+        "0.1": 0.0377,
+        "0.25": 0.0335,
+        "0.5": 0.0294
+      },
+      "boundary_aware_acc": 0.4467,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5202,
+          "f1": 0.6677
+        },
+        "Parent Vessel ID": {
+          "acc": 0.649,
+          "f1": 0.3248
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0428,
+          "f1": 0.0813
+        },
+        "Clipping": {
+          "acc": 0.4504,
+          "f1": 0.0674
+        }
+      }
+    },
+    {
+      "epoch": 38,
+      "epoch_time_s": 0.9,
+      "total_time_s": 35.5,
+      "train_loss": 0.4841,
+      "train_acc": 0.9972,
+      "val_loss": 1.2854,
+      "val_acc": 0.4675,
+      "edit_distance": 0.0182,
+      "segmental_f1": {
+        "0.1": 0.0189,
+        "0.25": 0.0147,
+        "0.5": 0.0084
+      },
+      "boundary_aware_acc": 0.4685,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.497,
+          "f1": 0.6543
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6272,
+          "f1": 0.2788
+        },
+        "Dome and Neck ID": {
+          "acc": 0.2441,
+          "f1": 0.3382
+        },
+        "Clipping": {
+          "acc": 0.3257,
+          "f1": 0.075
+        }
+      }
+    },
+    {
+      "epoch": 39,
+      "epoch_time_s": 0.9,
+      "total_time_s": 36.4,
+      "train_loss": 0.4883,
+      "train_acc": 0.9956,
+      "val_loss": 1.3222,
+      "val_acc": 0.4503,
+      "edit_distance": 0.0384,
+      "segmental_f1": {
+        "0.1": 0.0461,
+        "0.25": 0.0369,
+        "0.5": 0.0184
+      },
+      "boundary_aware_acc": 0.4509,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4966,
+          "f1": 0.6555
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6644,
+          "f1": 0.3272
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0937,
+          "f1": 0.1687
+        },
+        "Clipping": {
+          "acc": 0.4809,
+          "f1": 0.073
+        }
+      }
+    },
+    {
+      "epoch": 40,
+      "epoch_time_s": 1.0,
+      "total_time_s": 37.4,
+      "train_loss": 0.4829,
+      "train_acc": 0.9969,
+      "val_loss": 1.3222,
+      "val_acc": 0.4633,
+      "edit_distance": 0.0339,
+      "segmental_f1": {
+        "0.1": 0.0347,
+        "0.25": 0.0308,
+        "0.5": 0.0193
+      },
+      "boundary_aware_acc": 0.464,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.543,
+          "f1": 0.582
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5469,
+          "f1": 0.2884
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1874,
+          "f1": 0.3101
+        },
+        "Clipping": {
+          "acc": 0.4427,
+          "f1": 0.0891
+        }
+      }
+    },
+    {
+      "epoch": 41,
+      "epoch_time_s": 0.9,
+      "total_time_s": 38.2,
+      "train_loss": 0.4869,
+      "train_acc": 0.9978,
+      "val_loss": 1.2824,
+      "val_acc": 0.4608,
+      "edit_distance": 0.0208,
+      "segmental_f1": {
+        "0.1": 0.0239,
+        "0.25": 0.0167,
+        "0.5": 0.0072
+      },
+      "boundary_aware_acc": 0.462,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4933,
+          "f1": 0.6552
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6485,
+          "f1": 0.3237
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1893,
+          "f1": 0.2045
+        },
+        "Clipping": {
+          "acc": 0.3664,
+          "f1": 0.0758
+        }
+      }
+    },
+    {
+      "epoch": 42,
+      "epoch_time_s": 0.9,
+      "total_time_s": 39.2,
+      "train_loss": 0.4819,
+      "train_acc": 0.998,
+      "val_loss": 1.408,
+      "val_acc": 0.4287,
+      "edit_distance": 0.0343,
+      "segmental_f1": {
+        "0.1": 0.0331,
+        "0.25": 0.0331,
+        "0.5": 0.0207
+      },
+      "boundary_aware_acc": 0.4293,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5001,
+          "f1": 0.6593
+        },
+        "Parent Vessel ID": {
+          "acc": 0.61,
+          "f1": 0.2722
+        },
+        "Dome and Neck ID": {
+          "acc": 0.05,
+          "f1": 0.0937
+        },
+        "Clipping": {
+          "acc": 0.4656,
+          "f1": 0.086
+        }
+      }
+    },
+    {
+      "epoch": 43,
+      "epoch_time_s": 0.9,
+      "total_time_s": 40.1,
+      "train_loss": 0.485,
+      "train_acc": 0.9973,
+      "val_loss": 1.4404,
+      "val_acc": 0.4258,
+      "edit_distance": 0.0346,
+      "segmental_f1": {
+        "0.1": 0.0333,
+        "0.25": 0.0333,
+        "0.5": 0.0167
+      },
+      "boundary_aware_acc": 0.4266,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4931,
+          "f1": 0.6558
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6238,
+          "f1": 0.2754
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0423,
+          "f1": 0.0796
+        },
+        "Clipping": {
+          "acc": 0.4377,
+          "f1": 0.0816
+        }
+      }
+    },
+    {
+      "epoch": 44,
+      "epoch_time_s": 0.8,
+      "total_time_s": 41.0,
+      "train_loss": 0.4817,
+      "train_acc": 0.9985,
+      "val_loss": 1.2499,
+      "val_acc": 0.5033,
+      "edit_distance": 0.0193,
+      "segmental_f1": {
+        "0.1": 0.0178,
+        "0.25": 0.0156,
+        "0.5": 0.0067
+      },
+      "boundary_aware_acc": 0.5041,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4872,
+          "f1": 0.646
+        },
+        "Parent Vessel ID": {
+          "acc": 0.7753,
+          "f1": 0.327
+        },
+        "Dome and Neck ID": {
+          "acc": 0.2726,
+          "f1": 0.3732
+        },
+        "Clipping": {
+          "acc": 0.2824,
+          "f1": 0.0779
+        }
+      }
+    },
+    {
+      "epoch": 45,
+      "epoch_time_s": 0.9,
+      "total_time_s": 41.9,
+      "train_loss": 0.4885,
+      "train_acc": 0.9975,
+      "val_loss": 1.3887,
+      "val_acc": 0.4317,
+      "edit_distance": 0.025,
+      "segmental_f1": {
+        "0.1": 0.0274,
+        "0.25": 0.0244,
+        "0.5": 0.0183
+      },
+      "boundary_aware_acc": 0.4325,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5056,
+          "f1": 0.6631
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5845,
+          "f1": 0.3032
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0771,
+          "f1": 0.1426
+        },
+        "Clipping": {
+          "acc": 0.4809,
+          "f1": 0.0665
+        }
+      }
+    },
+    {
+      "epoch": 46,
+      "epoch_time_s": 0.9,
+      "total_time_s": 42.8,
+      "train_loss": 0.4836,
+      "train_acc": 0.9979,
+      "val_loss": 1.353,
+      "val_acc": 0.4399,
+      "edit_distance": 0.026,
+      "segmental_f1": {
+        "0.1": 0.0298,
+        "0.25": 0.0209,
+        "0.5": 0.0149
+      },
+      "boundary_aware_acc": 0.4405,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5075,
+          "f1": 0.66
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6201,
+          "f1": 0.2784
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0875,
+          "f1": 0.1549
+        },
+        "Clipping": {
+          "acc": 0.3893,
+          "f1": 0.0749
+        }
+      }
+    },
+    {
+      "epoch": 47,
+      "epoch_time_s": 0.9,
+      "total_time_s": 43.7,
+      "train_loss": 0.4813,
+      "train_acc": 0.9987,
+      "val_loss": 1.2963,
+      "val_acc": 0.4716,
+      "edit_distance": 0.0204,
+      "segmental_f1": {
+        "0.1": 0.0235,
+        "0.25": 0.0164,
+        "0.5": 0.0094
+      },
+      "boundary_aware_acc": 0.4726,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5124,
+          "f1": 0.6615
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6515,
+          "f1": 0.2871
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1998,
+          "f1": 0.2953
+        },
+        "Clipping": {
+          "acc": 0.3257,
+          "f1": 0.0761
+        }
+      }
+    },
+    {
+      "epoch": 48,
+      "epoch_time_s": 0.9,
+      "total_time_s": 44.7,
+      "train_loss": 0.4804,
+      "train_acc": 0.9983,
+      "val_loss": 1.3481,
+      "val_acc": 0.4361,
+      "edit_distance": 0.023,
+      "segmental_f1": {
+        "0.1": 0.0238,
+        "0.25": 0.0211,
+        "0.5": 0.0132
+      },
+      "boundary_aware_acc": 0.4371,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4999,
+          "f1": 0.5712
+        },
+        "Parent Vessel ID": {
+          "acc": 0.59,
+          "f1": 0.3027
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1204,
+          "f1": 0.2039
+        },
+        "Clipping": {
+          "acc": 0.3969,
+          "f1": 0.0729
+        }
+      }
+    },
+    {
+      "epoch": 49,
+      "epoch_time_s": 0.9,
+      "total_time_s": 45.6,
+      "train_loss": 0.4808,
+      "train_acc": 0.9977,
+      "val_loss": 1.3357,
+      "val_acc": 0.4465,
+      "edit_distance": 0.0218,
+      "segmental_f1": {
+        "0.1": 0.0251,
+        "0.25": 0.0176,
+        "0.5": 0.0125
+      },
+      "boundary_aware_acc": 0.4476,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4997,
+          "f1": 0.5701
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6134,
+          "f1": 0.3107
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1475,
+          "f1": 0.2392
+        },
+        "Clipping": {
+          "acc": 0.3715,
+          "f1": 0.0724
+        }
+      }
+    },
+    {
+      "epoch": 50,
+      "epoch_time_s": 0.9,
+      "total_time_s": 46.5,
+      "train_loss": 0.4845,
+      "train_acc": 0.9986,
+      "val_loss": 1.3118,
+      "val_acc": 0.4605,
+      "edit_distance": 0.0184,
+      "segmental_f1": {
+        "0.1": 0.0226,
+        "0.25": 0.0158,
+        "0.5": 0.0068
+      },
+      "boundary_aware_acc": 0.4616,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.486,
+          "f1": 0.6492
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6444,
+          "f1": 0.2858
+        },
+        "Dome and Neck ID": {
+          "acc": 0.216,
+          "f1": 0.3104
+        },
+        "Clipping": {
+          "acc": 0.3333,
+          "f1": 0.0726
+        }
+      }
+    },
+    {
+      "epoch": 51,
+      "epoch_time_s": 1.0,
+      "total_time_s": 47.5,
+      "train_loss": 0.494,
+      "train_acc": 0.9984,
+      "val_loss": 1.2984,
+      "val_acc": 0.4747,
+      "edit_distance": 0.0168,
+      "segmental_f1": {
+        "0.1": 0.0206,
+        "0.25": 0.0144,
+        "0.5": 0.0082
+      },
+      "boundary_aware_acc": 0.4762,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4991,
+          "f1": 0.6577
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6238,
+          "f1": 0.3165
+        },
+        "Dome and Neck ID": {
+          "acc": 0.2793,
+          "f1": 0.283
+        },
+        "Clipping": {
+          "acc": 0.3104,
+          "f1": 0.067
+        }
+      }
+    },
+    {
+      "epoch": 52,
+      "epoch_time_s": 0.8,
+      "total_time_s": 48.3,
+      "train_loss": 0.4777,
+      "train_acc": 0.9988,
+      "val_loss": 1.3215,
+      "val_acc": 0.4426,
+      "edit_distance": 0.0226,
+      "segmental_f1": {
+        "0.1": 0.026,
+        "0.25": 0.0182,
+        "0.5": 0.0052
+      },
+      "boundary_aware_acc": 0.4432,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4628,
+          "f1": 0.6277
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6728,
+          "f1": 0.2927
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1484,
+          "f1": 0.2315
+        },
+        "Clipping": {
+          "acc": 0.3664,
+          "f1": 0.077
+        }
+      }
+    },
+    {
+      "epoch": 53,
+      "epoch_time_s": 0.9,
+      "total_time_s": 49.2,
+      "train_loss": 0.4794,
+      "train_acc": 0.9987,
+      "val_loss": 1.3825,
+      "val_acc": 0.4329,
+      "edit_distance": 0.0269,
+      "segmental_f1": {
+        "0.1": 0.0295,
+        "0.25": 0.0262,
+        "0.5": 0.0164
+      },
+      "boundary_aware_acc": 0.4337,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5022,
+          "f1": 0.6597
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5954,
+          "f1": 0.2688
+        },
+        "Dome and Neck ID": {
+          "acc": 0.088,
+          "f1": 0.1577
+        },
+        "Clipping": {
+          "acc": 0.43,
+          "f1": 0.0794
+        }
+      }
+    },
+    {
+      "epoch": 54,
+      "epoch_time_s": 1.0,
+      "total_time_s": 50.2,
+      "train_loss": 0.4818,
+      "train_acc": 0.9993,
+      "val_loss": 1.3335,
+      "val_acc": 0.4486,
+      "edit_distance": 0.0214,
+      "segmental_f1": {
+        "0.1": 0.0222,
+        "0.25": 0.0172,
+        "0.5": 0.0123
+      },
+      "boundary_aware_acc": 0.4494,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5126,
+          "f1": 0.663
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5799,
+          "f1": 0.3004
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1632,
+          "f1": 0.1839
+        },
+        "Clipping": {
+          "acc": 0.3817,
+          "f1": 0.0729
+        }
+      }
+    },
+    {
+      "epoch": 55,
+      "epoch_time_s": 0.9,
+      "total_time_s": 51.1,
+      "train_loss": 0.486,
+      "train_acc": 0.9992,
+      "val_loss": 1.4992,
+      "val_acc": 0.3976,
+      "edit_distance": 0.0297,
+      "segmental_f1": {
+        "0.1": 0.0272,
+        "0.25": 0.0204,
+        "0.5": 0.0102
+      },
+      "boundary_aware_acc": 0.3975,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4355,
+          "f1": 0.6056
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6255,
+          "f1": 0.2733
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0395,
+          "f1": 0.0723
+        },
+        "Clipping": {
+          "acc": 0.4555,
+          "f1": 0.0821
+        }
+      }
+    },
+    {
+      "epoch": 56,
+      "epoch_time_s": 0.9,
+      "total_time_s": 52.0,
+      "train_loss": 0.4784,
+      "train_acc": 0.9993,
+      "val_loss": 1.3591,
+      "val_acc": 0.4413,
+      "edit_distance": 0.0284,
+      "segmental_f1": {
+        "0.1": 0.0325,
+        "0.25": 0.0228,
+        "0.5": 0.0163
+      },
+      "boundary_aware_acc": 0.4421,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5097,
+          "f1": 0.6592
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6218,
+          "f1": 0.2774
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0852,
+          "f1": 0.1514
+        },
+        "Clipping": {
+          "acc": 0.3995,
+          "f1": 0.0787
+        }
+      }
+    },
+    {
+      "epoch": 57,
+      "epoch_time_s": 1.0,
+      "total_time_s": 53.0,
+      "train_loss": 0.4788,
+      "train_acc": 0.9992,
+      "val_loss": 1.3882,
+      "val_acc": 0.4348,
+      "edit_distance": 0.0273,
+      "segmental_f1": {
+        "0.1": 0.0298,
+        "0.25": 0.0265,
+        "0.5": 0.0166
+      },
+      "boundary_aware_acc": 0.4355,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5036,
+          "f1": 0.6587
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6096,
+          "f1": 0.2738
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0785,
+          "f1": 0.141
+        },
+        "Clipping": {
+          "acc": 0.4249,
+          "f1": 0.08
+        }
+      }
+    },
+    {
+      "epoch": 58,
+      "epoch_time_s": 0.8,
+      "total_time_s": 53.8,
+      "train_loss": 0.4752,
+      "train_acc": 0.9993,
+      "val_loss": 1.3741,
+      "val_acc": 0.4279,
+      "edit_distance": 0.0237,
+      "segmental_f1": {
+        "0.1": 0.0245,
+        "0.25": 0.0218,
+        "0.5": 0.0136
+      },
+      "boundary_aware_acc": 0.4285,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4896,
+          "f1": 0.5592
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5921,
+          "f1": 0.3015
+        },
+        "Dome and Neck ID": {
+          "acc": 0.099,
+          "f1": 0.1694
+        },
+        "Clipping": {
+          "acc": 0.4224,
+          "f1": 0.0785
+        }
+      }
+    },
+    {
+      "epoch": 59,
+      "epoch_time_s": 0.9,
+      "total_time_s": 54.8,
+      "train_loss": 0.4776,
+      "train_acc": 0.9994,
+      "val_loss": 1.388,
+      "val_acc": 0.432,
+      "edit_distance": 0.0248,
+      "segmental_f1": {
+        "0.1": 0.0228,
+        "0.25": 0.0228,
+        "0.5": 0.0142
+      },
+      "boundary_aware_acc": 0.4324,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5081,
+          "f1": 0.6597
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5933,
+          "f1": 0.2684
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0752,
+          "f1": 0.1337
+        },
+        "Clipping": {
+          "acc": 0.4148,
+          "f1": 0.0782
+        }
+      }
+    },
+    {
+      "epoch": 60,
+      "epoch_time_s": 0.9,
+      "total_time_s": 55.8,
+      "train_loss": 0.4825,
+      "train_acc": 0.9993,
+      "val_loss": 1.3824,
+      "val_acc": 0.4383,
+      "edit_distance": 0.0242,
+      "segmental_f1": {
+        "0.1": 0.0266,
+        "0.25": 0.0207,
+        "0.5": 0.0059
+      },
+      "boundary_aware_acc": 0.439,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4935,
+          "f1": 0.6505
+        },
+        "Parent Vessel ID": {
+          "acc": 0.654,
+          "f1": 0.2871
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0737,
+          "f1": 0.1311
+        },
+        "Clipping": {
+          "acc": 0.3919,
+          "f1": 0.0778
+        }
+      }
+    },
+    {
+      "epoch": 61,
+      "epoch_time_s": 0.9,
+      "total_time_s": 56.7,
+      "train_loss": 0.4904,
+      "train_acc": 0.9994,
+      "val_loss": 1.3786,
+      "val_acc": 0.4387,
+      "edit_distance": 0.0223,
+      "segmental_f1": {
+        "0.1": 0.0231,
+        "0.25": 0.018,
+        "0.5": 0.0128
+      },
+      "boundary_aware_acc": 0.4394,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5257,
+          "f1": 0.6649
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5586,
+          "f1": 0.2891
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1094,
+          "f1": 0.1869
+        },
+        "Clipping": {
+          "acc": 0.3919,
+          "f1": 0.0592
+        }
+      }
+    },
+    {
+      "epoch": 62,
+      "epoch_time_s": 0.9,
+      "total_time_s": 57.6,
+      "train_loss": 0.4905,
+      "train_acc": 0.9994,
+      "val_loss": 1.4073,
+      "val_acc": 0.4294,
+      "edit_distance": 0.0289,
+      "segmental_f1": {
+        "0.1": 0.0316,
+        "0.25": 0.0281,
+        "0.5": 0.014
+      },
+      "boundary_aware_acc": 0.4301,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4944,
+          "f1": 0.6545
+        },
+        "Parent Vessel ID": {
+          "acc": 0.61,
+          "f1": 0.2732
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0733,
+          "f1": 0.1323
+        },
+        "Clipping": {
+          "acc": 0.43,
+          "f1": 0.0796
+        }
+      }
+    },
+    {
+      "epoch": 63,
+      "epoch_time_s": 0.9,
+      "total_time_s": 58.5,
+      "train_loss": 0.479,
+      "train_acc": 0.9996,
+      "val_loss": 1.4172,
+      "val_acc": 0.4296,
+      "edit_distance": 0.0302,
+      "segmental_f1": {
+        "0.1": 0.031,
+        "0.25": 0.0276,
+        "0.5": 0.0207
+      },
+      "boundary_aware_acc": 0.4301,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5046,
+          "f1": 0.6594
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5916,
+          "f1": 0.3004
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0671,
+          "f1": 0.124
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0652
+        }
+      }
+    },
+    {
+      "epoch": 64,
+      "epoch_time_s": 0.8,
+      "total_time_s": 59.4,
+      "train_loss": 0.4751,
+      "train_acc": 0.9997,
+      "val_loss": 1.3998,
+      "val_acc": 0.431,
+      "edit_distance": 0.0294,
+      "segmental_f1": {
+        "0.1": 0.0336,
+        "0.25": 0.0269,
+        "0.5": 0.0134
+      },
+      "boundary_aware_acc": 0.4317,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4954,
+          "f1": 0.6543
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6126,
+          "f1": 0.2741
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0756,
+          "f1": 0.1355
+        },
+        "Clipping": {
+          "acc": 0.4275,
+          "f1": 0.0801
+        }
+      }
+    },
+    {
+      "epoch": 65,
+      "epoch_time_s": 0.9,
+      "total_time_s": 60.3,
+      "train_loss": 0.4827,
+      "train_acc": 0.9997,
+      "val_loss": 1.384,
+      "val_acc": 0.4354,
+      "edit_distance": 0.0261,
+      "segmental_f1": {
+        "0.1": 0.0317,
+        "0.25": 0.0222,
+        "0.5": 0.0158
+      },
+      "boundary_aware_acc": 0.4361,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4999,
+          "f1": 0.6566
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6138,
+          "f1": 0.2746
+        },
+        "Dome and Neck ID": {
+          "acc": 0.089,
+          "f1": 0.156
+        },
+        "Clipping": {
+          "acc": 0.402,
+          "f1": 0.077
+        }
+      }
+    },
+    {
+      "epoch": 66,
+      "epoch_time_s": 0.9,
+      "total_time_s": 61.2,
+      "train_loss": 0.4802,
+      "train_acc": 0.9996,
+      "val_loss": 1.3964,
+      "val_acc": 0.4322,
+      "edit_distance": 0.0287,
+      "segmental_f1": {
+        "0.1": 0.0328,
+        "0.25": 0.023,
+        "0.5": 0.0131
+      },
+      "boundary_aware_acc": 0.4329,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4962,
+          "f1": 0.6547
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6167,
+          "f1": 0.2748
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0794,
+          "f1": 0.1404
+        },
+        "Clipping": {
+          "acc": 0.402,
+          "f1": 0.0768
+        }
+      }
+    },
+    {
+      "epoch": 67,
+      "epoch_time_s": 0.9,
+      "total_time_s": 62.1,
+      "train_loss": 0.4785,
+      "train_acc": 0.9997,
+      "val_loss": 1.3917,
+      "val_acc": 0.4327,
+      "edit_distance": 0.026,
+      "segmental_f1": {
+        "0.1": 0.0268,
+        "0.25": 0.0238,
+        "0.5": 0.0149
+      },
+      "boundary_aware_acc": 0.4336,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.5007,
+          "f1": 0.57
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5828,
+          "f1": 0.2984
+        },
+        "Dome and Neck ID": {
+          "acc": 0.1051,
+          "f1": 0.1834
+        },
+        "Clipping": {
+          "acc": 0.4275,
+          "f1": 0.0782
+        }
+      }
+    },
+    {
+      "epoch": 68,
+      "epoch_time_s": 1.0,
+      "total_time_s": 63.1,
+      "train_loss": 0.479,
+      "train_acc": 0.9997,
+      "val_loss": 1.4055,
+      "val_acc": 0.4326,
+      "edit_distance": 0.0315,
+      "segmental_f1": {
+        "0.1": 0.0324,
+        "0.25": 0.0288,
+        "0.5": 0.0144
+      },
+      "boundary_aware_acc": 0.4332,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4978,
+          "f1": 0.6551
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6222,
+          "f1": 0.277
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0637,
+          "f1": 0.1172
+        },
+        "Clipping": {
+          "acc": 0.4427,
+          "f1": 0.0833
+        }
+      }
+    },
+    {
+      "epoch": 69,
+      "epoch_time_s": 0.9,
+      "total_time_s": 64.0,
+      "train_loss": 0.484,
+      "train_acc": 0.9997,
+      "val_loss": 1.4143,
+      "val_acc": 0.4298,
+      "edit_distance": 0.0287,
+      "segmental_f1": {
+        "0.1": 0.0313,
+        "0.25": 0.0278,
+        "0.5": 0.0209
+      },
+      "boundary_aware_acc": 0.4304,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4991,
+          "f1": 0.6567
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5992,
+          "f1": 0.27
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0723,
+          "f1": 0.1323
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0829
+        }
+      }
+    },
+    {
+      "epoch": 70,
+      "epoch_time_s": 0.9,
+      "total_time_s": 64.9,
+      "train_loss": 0.4765,
+      "train_acc": 0.9997,
+      "val_loss": 1.4269,
+      "val_acc": 0.4286,
+      "edit_distance": 0.0321,
+      "segmental_f1": {
+        "0.1": 0.0349,
+        "0.25": 0.031,
+        "0.5": 0.0194
+      },
+      "boundary_aware_acc": 0.4293,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4954,
+          "f1": 0.6539
+        },
+        "Parent Vessel ID": {
+          "acc": 0.618,
+          "f1": 0.2752
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0533,
+          "f1": 0.1
+        },
+        "Clipping": {
+          "acc": 0.4555,
+          "f1": 0.0843
+        }
+      }
+    },
+    {
+      "epoch": 71,
+      "epoch_time_s": 1.0,
+      "total_time_s": 65.9,
+      "train_loss": 0.4785,
+      "train_acc": 0.9998,
+      "val_loss": 1.4024,
+      "val_acc": 0.4305,
+      "edit_distance": 0.0284,
+      "segmental_f1": {
+        "0.1": 0.0344,
+        "0.25": 0.0275,
+        "0.5": 0.0138
+      },
+      "boundary_aware_acc": 0.4311,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4935,
+          "f1": 0.6537
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6113,
+          "f1": 0.2745
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0756,
+          "f1": 0.1373
+        },
+        "Clipping": {
+          "acc": 0.4478,
+          "f1": 0.0821
+        }
+      }
+    },
+    {
+      "epoch": 72,
+      "epoch_time_s": 0.8,
+      "total_time_s": 66.7,
+      "train_loss": 0.4808,
+      "train_acc": 0.9996,
+      "val_loss": 1.4124,
+      "val_acc": 0.429,
+      "edit_distance": 0.0293,
+      "segmental_f1": {
+        "0.1": 0.0355,
+        "0.25": 0.0284,
+        "0.5": 0.0142
+      },
+      "boundary_aware_acc": 0.4295,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4948,
+          "f1": 0.6549
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6084,
+          "f1": 0.2731
+        },
+        "Dome and Neck ID": {
+          "acc": 0.069,
+          "f1": 0.1258
+        },
+        "Clipping": {
+          "acc": 0.4478,
+          "f1": 0.0821
+        }
+      }
+    },
+    {
+      "epoch": 73,
+      "epoch_time_s": 0.9,
+      "total_time_s": 67.6,
+      "train_loss": 0.4784,
+      "train_acc": 0.9998,
+      "val_loss": 1.3653,
+      "val_acc": 0.4392,
+      "edit_distance": 0.0249,
+      "segmental_f1": {
+        "0.1": 0.0286,
+        "0.25": 0.02,
+        "0.5": 0.0143
+      },
+      "boundary_aware_acc": 0.44,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4991,
+          "f1": 0.6561
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6151,
+          "f1": 0.2758
+        },
+        "Dome and Neck ID": {
+          "acc": 0.107,
+          "f1": 0.1826
+        },
+        "Clipping": {
+          "acc": 0.402,
+          "f1": 0.0777
+        }
+      }
+    },
+    {
+      "epoch": 74,
+      "epoch_time_s": 0.9,
+      "total_time_s": 68.6,
+      "train_loss": 0.4748,
+      "train_acc": 0.9997,
+      "val_loss": 1.4146,
+      "val_acc": 0.4293,
+      "edit_distance": 0.0282,
+      "segmental_f1": {
+        "0.1": 0.0308,
+        "0.25": 0.0274,
+        "0.5": 0.0171
+      },
+      "boundary_aware_acc": 0.4299,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4974,
+          "f1": 0.6562
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6008,
+          "f1": 0.2705
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0733,
+          "f1": 0.1329
+        },
+        "Clipping": {
+          "acc": 0.4453,
+          "f1": 0.0817
+        }
+      }
+    },
+    {
+      "epoch": 75,
+      "epoch_time_s": 0.9,
+      "total_time_s": 69.5,
+      "train_loss": 0.476,
+      "train_acc": 0.9998,
+      "val_loss": 1.405,
+      "val_acc": 0.4296,
+      "edit_distance": 0.0287,
+      "segmental_f1": {
+        "0.1": 0.0348,
+        "0.25": 0.0279,
+        "0.5": 0.0139
+      },
+      "boundary_aware_acc": 0.4303,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4935,
+          "f1": 0.6535
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6079,
+          "f1": 0.2726
+        },
+        "Dome and Neck ID": {
+          "acc": 0.078,
+          "f1": 0.1403
+        },
+        "Clipping": {
+          "acc": 0.4326,
+          "f1": 0.0801
+        }
+      }
+    },
+    {
+      "epoch": 76,
+      "epoch_time_s": 1.0,
+      "total_time_s": 70.5,
+      "train_loss": 0.4762,
+      "train_acc": 0.9996,
+      "val_loss": 1.4117,
+      "val_acc": 0.4291,
+      "edit_distance": 0.0282,
+      "segmental_f1": {
+        "0.1": 0.0308,
+        "0.25": 0.0274,
+        "0.5": 0.0171
+      },
+      "boundary_aware_acc": 0.4297,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4933,
+          "f1": 0.654
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5971,
+          "f1": 0.2698
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0847,
+          "f1": 0.1527
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0819
+        }
+      }
+    },
+    {
+      "epoch": 77,
+      "epoch_time_s": 1.0,
+      "total_time_s": 71.5,
+      "train_loss": 0.4764,
+      "train_acc": 0.9997,
+      "val_loss": 1.4227,
+      "val_acc": 0.4274,
+      "edit_distance": 0.0305,
+      "segmental_f1": {
+        "0.1": 0.0332,
+        "0.25": 0.0295,
+        "0.5": 0.0185
+      },
+      "boundary_aware_acc": 0.428,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4948,
+          "f1": 0.6547
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5971,
+          "f1": 0.2698
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0714,
+          "f1": 0.1316
+        },
+        "Clipping": {
+          "acc": 0.4631,
+          "f1": 0.083
+        }
+      }
+    },
+    {
+      "epoch": 78,
+      "epoch_time_s": 0.8,
+      "total_time_s": 72.3,
+      "train_loss": 0.4781,
+      "train_acc": 0.9998,
+      "val_loss": 1.4042,
+      "val_acc": 0.432,
+      "edit_distance": 0.0279,
+      "segmental_f1": {
+        "0.1": 0.0339,
+        "0.25": 0.0271,
+        "0.5": 0.0169
+      },
+      "boundary_aware_acc": 0.4326,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.496,
+          "f1": 0.6555
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6071,
+          "f1": 0.2735
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0804,
+          "f1": 0.1459
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0827
+        }
+      }
+    },
+    {
+      "epoch": 79,
+      "epoch_time_s": 0.9,
+      "total_time_s": 73.2,
+      "train_loss": 0.4802,
+      "train_acc": 0.9998,
+      "val_loss": 1.4125,
+      "val_acc": 0.4306,
+      "edit_distance": 0.0302,
+      "segmental_f1": {
+        "0.1": 0.0366,
+        "0.25": 0.0293,
+        "0.5": 0.0183
+      },
+      "boundary_aware_acc": 0.4313,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4944,
+          "f1": 0.6537
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6184,
+          "f1": 0.276
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0647,
+          "f1": 0.1193
+        },
+        "Clipping": {
+          "acc": 0.4555,
+          "f1": 0.0843
+        }
+      }
+    },
+    {
+      "epoch": 80,
+      "epoch_time_s": 0.8,
+      "total_time_s": 74.1,
+      "train_loss": 0.4798,
+      "train_acc": 0.9998,
+      "val_loss": 1.4057,
+      "val_acc": 0.4324,
+      "edit_distance": 0.0306,
+      "segmental_f1": {
+        "0.1": 0.0349,
+        "0.25": 0.0279,
+        "0.5": 0.014
+      },
+      "boundary_aware_acc": 0.4329,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4958,
+          "f1": 0.6545
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6142,
+          "f1": 0.2748
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0756,
+          "f1": 0.1371
+        },
+        "Clipping": {
+          "acc": 0.4478,
+          "f1": 0.0835
+        }
+      }
+    },
+    {
+      "epoch": 81,
+      "epoch_time_s": 0.9,
+      "total_time_s": 75.0,
+      "train_loss": 0.4804,
+      "train_acc": 0.9998,
+      "val_loss": 1.443,
+      "val_acc": 0.4244,
+      "edit_distance": 0.0322,
+      "segmental_f1": {
+        "0.1": 0.035,
+        "0.25": 0.0311,
+        "0.5": 0.0195
+      },
+      "boundary_aware_acc": 0.4251,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4946,
+          "f1": 0.6552
+        },
+        "Parent Vessel ID": {
+          "acc": 0.5925,
+          "f1": 0.2678
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0618,
+          "f1": 0.1154
+        },
+        "Clipping": {
+          "acc": 0.4707,
+          "f1": 0.0837
+        }
+      }
+    },
+    {
+      "epoch": 82,
+      "epoch_time_s": 0.9,
+      "total_time_s": 75.9,
+      "train_loss": 0.4775,
+      "train_acc": 0.9998,
+      "val_loss": 1.4154,
+      "val_acc": 0.4302,
+      "edit_distance": 0.0291,
+      "segmental_f1": {
+        "0.1": 0.0353,
+        "0.25": 0.0282,
+        "0.5": 0.0176
+      },
+      "boundary_aware_acc": 0.4308,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4964,
+          "f1": 0.6557
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6088,
+          "f1": 0.2731
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0695,
+          "f1": 0.127
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0833
+        }
+      }
+    },
+    {
+      "epoch": 83,
+      "epoch_time_s": 0.9,
+      "total_time_s": 76.8,
+      "train_loss": 0.4793,
+      "train_acc": 0.9998,
+      "val_loss": 1.4082,
+      "val_acc": 0.4311,
+      "edit_distance": 0.0286,
+      "segmental_f1": {
+        "0.1": 0.0347,
+        "0.25": 0.0278,
+        "0.5": 0.0139
+      },
+      "boundary_aware_acc": 0.4316,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4956,
+          "f1": 0.6551
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6096,
+          "f1": 0.2737
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0747,
+          "f1": 0.1354
+        },
+        "Clipping": {
+          "acc": 0.4504,
+          "f1": 0.083
+        }
+      }
+    },
+    {
+      "epoch": 84,
+      "epoch_time_s": 0.9,
+      "total_time_s": 77.7,
+      "train_loss": 0.4781,
+      "train_acc": 0.9998,
+      "val_loss": 1.4362,
+      "val_acc": 0.4266,
+      "edit_distance": 0.0316,
+      "segmental_f1": {
+        "0.1": 0.0344,
+        "0.25": 0.0306,
+        "0.5": 0.0191
+      },
+      "boundary_aware_acc": 0.4272,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4942,
+          "f1": 0.6543
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6096,
+          "f1": 0.2727
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0557,
+          "f1": 0.1039
+        },
+        "Clipping": {
+          "acc": 0.458,
+          "f1": 0.0836
+        }
+      }
+    },
+    {
+      "epoch": 85,
+      "epoch_time_s": 1.0,
+      "total_time_s": 78.7,
+      "train_loss": 0.478,
+      "train_acc": 0.9999,
+      "val_loss": 1.4046,
+      "val_acc": 0.4314,
+      "edit_distance": 0.0275,
+      "segmental_f1": {
+        "0.1": 0.0334,
+        "0.25": 0.0268,
+        "0.5": 0.0134
+      },
+      "boundary_aware_acc": 0.4319,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.495,
+          "f1": 0.6547
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6079,
+          "f1": 0.2731
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0799,
+          "f1": 0.144
+        },
+        "Clipping": {
+          "acc": 0.4478,
+          "f1": 0.0825
+        }
+      }
+    },
+    {
+      "epoch": 86,
+      "epoch_time_s": 0.8,
+      "total_time_s": 79.5,
+      "train_loss": 0.4844,
+      "train_acc": 0.9998,
+      "val_loss": 1.4276,
+      "val_acc": 0.4267,
+      "edit_distance": 0.0308,
+      "segmental_f1": {
+        "0.1": 0.0336,
+        "0.25": 0.0299,
+        "0.5": 0.0187
+      },
+      "boundary_aware_acc": 0.4272,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4935,
+          "f1": 0.6542
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6008,
+          "f1": 0.2703
+        },
+        "Dome and Neck ID": {
+          "acc": 0.068,
+          "f1": 0.1252
+        },
+        "Clipping": {
+          "acc": 0.4555,
+          "f1": 0.0824
+        }
+      }
+    },
+    {
+      "epoch": 87,
+      "epoch_time_s": 0.9,
+      "total_time_s": 80.4,
+      "train_loss": 0.4764,
+      "train_acc": 0.9998,
+      "val_loss": 1.4097,
+      "val_acc": 0.4299,
+      "edit_distance": 0.029,
+      "segmental_f1": {
+        "0.1": 0.0351,
+        "0.25": 0.0281,
+        "0.5": 0.0141
+      },
+      "boundary_aware_acc": 0.4304,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4927,
+          "f1": 0.6533
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6096,
+          "f1": 0.2736
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0761,
+          "f1": 0.1379
+        },
+        "Clipping": {
+          "acc": 0.4504,
+          "f1": 0.0826
+        }
+      }
+    },
+    {
+      "epoch": 88,
+      "epoch_time_s": 0.9,
+      "total_time_s": 81.3,
+      "train_loss": 0.4757,
+      "train_acc": 0.9998,
+      "val_loss": 1.4132,
+      "val_acc": 0.4306,
+      "edit_distance": 0.0291,
+      "segmental_f1": {
+        "0.1": 0.0353,
+        "0.25": 0.0282,
+        "0.5": 0.0176
+      },
+      "boundary_aware_acc": 0.4313,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4942,
+          "f1": 0.6544
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6109,
+          "f1": 0.2742
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0742,
+          "f1": 0.1354
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.083
+        }
+      }
+    },
+    {
+      "epoch": 89,
+      "epoch_time_s": 0.9,
+      "total_time_s": 82.2,
+      "train_loss": 0.4775,
+      "train_acc": 0.9999,
+      "val_loss": 1.4062,
+      "val_acc": 0.4316,
+      "edit_distance": 0.0285,
+      "segmental_f1": {
+        "0.1": 0.0345,
+        "0.25": 0.0276,
+        "0.5": 0.0173
+      },
+      "boundary_aware_acc": 0.4322,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4948,
+          "f1": 0.6539
+        },
+        "Parent Vessel ID": {
+          "acc": 0.613,
+          "f1": 0.2749
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0747,
+          "f1": 0.1361
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0834
+        }
+      }
+    },
+    {
+      "epoch": 90,
+      "epoch_time_s": 0.9,
+      "total_time_s": 83.1,
+      "train_loss": 0.4811,
+      "train_acc": 0.9998,
+      "val_loss": 1.409,
+      "val_acc": 0.4315,
+      "edit_distance": 0.0285,
+      "segmental_f1": {
+        "0.1": 0.0345,
+        "0.25": 0.0276,
+        "0.5": 0.0173
+      },
+      "boundary_aware_acc": 0.4321,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4956,
+          "f1": 0.6547
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6117,
+          "f1": 0.2744
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0737,
+          "f1": 0.1342
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0835
+        }
+      }
+    },
+    {
+      "epoch": 91,
+      "epoch_time_s": 0.8,
+      "total_time_s": 84.0,
+      "train_loss": 0.4803,
+      "train_acc": 0.9998,
+      "val_loss": 1.408,
+      "val_acc": 0.4312,
+      "edit_distance": 0.0284,
+      "segmental_f1": {
+        "0.1": 0.0344,
+        "0.25": 0.0275,
+        "0.5": 0.0172
+      },
+      "boundary_aware_acc": 0.4318,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4954,
+          "f1": 0.655
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6075,
+          "f1": 0.2731
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0775,
+          "f1": 0.1408
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.083
+        }
+      }
+    },
+    {
+      "epoch": 92,
+      "epoch_time_s": 0.9,
+      "total_time_s": 84.8,
+      "train_loss": 0.4759,
+      "train_acc": 0.9999,
+      "val_loss": 1.4085,
+      "val_acc": 0.4313,
+      "edit_distance": 0.0285,
+      "segmental_f1": {
+        "0.1": 0.0346,
+        "0.25": 0.0277,
+        "0.5": 0.0173
+      },
+      "boundary_aware_acc": 0.4319,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4952,
+          "f1": 0.6547
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6109,
+          "f1": 0.274
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0747,
+          "f1": 0.1358
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0835
+        }
+      }
+    },
+    {
+      "epoch": 93,
+      "epoch_time_s": 0.8,
+      "total_time_s": 85.7,
+      "train_loss": 0.4781,
+      "train_acc": 0.9999,
+      "val_loss": 1.4145,
+      "val_acc": 0.4298,
+      "edit_distance": 0.0296,
+      "segmental_f1": {
+        "0.1": 0.0358,
+        "0.25": 0.0287,
+        "0.5": 0.0179
+      },
+      "boundary_aware_acc": 0.4304,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4946,
+          "f1": 0.6544
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6105,
+          "f1": 0.2736
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0699,
+          "f1": 0.1279
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0832
+        }
+      }
+    },
+    {
+      "epoch": 94,
+      "epoch_time_s": 0.9,
+      "total_time_s": 86.6,
+      "train_loss": 0.4752,
+      "train_acc": 0.9999,
+      "val_loss": 1.4125,
+      "val_acc": 0.4309,
+      "edit_distance": 0.029,
+      "segmental_f1": {
+        "0.1": 0.0352,
+        "0.25": 0.0282,
+        "0.5": 0.0176
+      },
+      "boundary_aware_acc": 0.4315,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4946,
+          "f1": 0.6546
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6113,
+          "f1": 0.2742
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0737,
+          "f1": 0.1343
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0832
+        }
+      }
+    },
+    {
+      "epoch": 95,
+      "epoch_time_s": 1.0,
+      "total_time_s": 87.5,
+      "train_loss": 0.4799,
+      "train_acc": 0.9998,
+      "val_loss": 1.4175,
+      "val_acc": 0.4296,
+      "edit_distance": 0.0299,
+      "segmental_f1": {
+        "0.1": 0.0362,
+        "0.25": 0.0289,
+        "0.5": 0.0181
+      },
+      "boundary_aware_acc": 0.4302,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4933,
+          "f1": 0.6539
+        },
+        "Parent Vessel ID": {
+          "acc": 0.613,
+          "f1": 0.2746
+        },
+        "Dome and Neck ID": {
+          "acc": 0.069,
+          "f1": 0.1265
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.083
+        }
+      }
+    },
+    {
+      "epoch": 96,
+      "epoch_time_s": 0.8,
+      "total_time_s": 88.4,
+      "train_loss": 0.478,
+      "train_acc": 0.9999,
+      "val_loss": 1.4161,
+      "val_acc": 0.4301,
+      "edit_distance": 0.0297,
+      "segmental_f1": {
+        "0.1": 0.036,
+        "0.25": 0.0288,
+        "0.5": 0.018
+      },
+      "boundary_aware_acc": 0.4307,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4937,
+          "f1": 0.6543
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6138,
+          "f1": 0.2748
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0695,
+          "f1": 0.1273
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0831
+        }
+      }
+    },
+    {
+      "epoch": 97,
+      "epoch_time_s": 0.9,
+      "total_time_s": 89.2,
+      "train_loss": 0.4783,
+      "train_acc": 0.9999,
+      "val_loss": 1.4085,
+      "val_acc": 0.4314,
+      "edit_distance": 0.0286,
+      "segmental_f1": {
+        "0.1": 0.0347,
+        "0.25": 0.0278,
+        "0.5": 0.0174
+      },
+      "boundary_aware_acc": 0.432,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4944,
+          "f1": 0.6545
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6113,
+          "f1": 0.2744
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0766,
+          "f1": 0.1392
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0831
+        }
+      }
+    },
+    {
+      "epoch": 98,
+      "epoch_time_s": 0.9,
+      "total_time_s": 90.2,
+      "train_loss": 0.4758,
+      "train_acc": 0.9997,
+      "val_loss": 1.4108,
+      "val_acc": 0.4312,
+      "edit_distance": 0.0287,
+      "segmental_f1": {
+        "0.1": 0.0348,
+        "0.25": 0.0278,
+        "0.5": 0.0174
+      },
+      "boundary_aware_acc": 0.4318,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4942,
+          "f1": 0.6544
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6109,
+          "f1": 0.2743
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0766,
+          "f1": 0.1393
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.083
+        }
+      }
+    },
+    {
+      "epoch": 99,
+      "epoch_time_s": 0.8,
+      "total_time_s": 91.0,
+      "train_loss": 0.4768,
+      "train_acc": 0.9999,
+      "val_loss": 1.4115,
+      "val_acc": 0.4304,
+      "edit_distance": 0.0293,
+      "segmental_f1": {
+        "0.1": 0.0355,
+        "0.25": 0.0284,
+        "0.5": 0.0178
+      },
+      "boundary_aware_acc": 0.4311,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.494,
+          "f1": 0.6541
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6079,
+          "f1": 0.2733
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0771,
+          "f1": 0.1402
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0828
+        }
+      }
+    },
+    {
+      "epoch": 100,
+      "epoch_time_s": 0.9,
+      "total_time_s": 91.9,
+      "train_loss": 0.4829,
+      "train_acc": 0.9999,
+      "val_loss": 1.4092,
+      "val_acc": 0.4311,
+      "edit_distance": 0.0288,
+      "segmental_f1": {
+        "0.1": 0.035,
+        "0.25": 0.028,
+        "0.5": 0.0175
+      },
+      "boundary_aware_acc": 0.4317,
+      "boundary_ignore_secs": 5,
+      "per_class": {
+        "Brain Exposure": {
+          "acc": 0.4944,
+          "f1": 0.6545
+        },
+        "Parent Vessel ID": {
+          "acc": 0.6092,
+          "f1": 0.2738
+        },
+        "Dome and Neck ID": {
+          "acc": 0.0775,
+          "f1": 0.1409
+        },
+        "Clipping": {
+          "acc": 0.4529,
+          "f1": 0.0829
+        }
+      }
+    }
+  ],
+  "total_time_s": 91.9
+}
