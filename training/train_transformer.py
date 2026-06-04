@@ -11,6 +11,7 @@ from data.splits import build_samples, train_val_split
 from models.opera_transformer import NeuroOperA
 from utils.class_weights import compute_class_weights
 from utils.logger import RunLogger
+from utils.metrics import edit_distance, segmental_f1
 
 
 CLASS_NAMES = [
@@ -75,6 +76,7 @@ def eval_one_epoch(model, loader, device):
     tp = torch.zeros(num_classes)
     fp = torch.zeros(num_classes)
     fn = torch.zeros(num_classes)
+    all_preds, all_gts = [], []
     for features, labels, padding_mask in loader:
         features = features.to(device)
         labels = labels.to(device)
@@ -93,6 +95,11 @@ def eval_one_epoch(model, loader, device):
         tp += btp
         fp += bfp
         fn += bfn
+        flat_labels = labels.reshape(-1).cpu()
+        flat_preds = logits.reshape(-1, logits.shape[-1]).argmax(1).cpu()
+        mask = flat_labels != -100
+        all_preds.extend(flat_preds[mask].tolist())
+        all_gts.extend(flat_labels[mask].tolist())
 
     per_class = []
     for c in range(num_classes):
@@ -101,7 +108,11 @@ def eval_one_epoch(model, loader, device):
         f1 = (2 * tp[c] / denom).item() if denom > 0 else float("nan")
         per_class.append((acc, f1))
 
-    return total_loss / len(loader), correct / total, per_class
+    extra = {
+        "edit_distance": round(edit_distance(all_preds, all_gts), 4),
+        "segmental_f1": segmental_f1(all_preds, all_gts),
+    }
+    return total_loss / len(loader), correct / total, per_class, extra
 
 
 def main():
@@ -156,8 +167,12 @@ def main():
 
     for epoch in range(1, args.epochs + 1):
         train_loss, train_acc = train_one_epoch(model, train_loader, optimizer, device, class_weights=class_weights)
-        val_loss, val_acc, per_class = eval_one_epoch(model, val_loader, device)
+        val_loss, val_acc, per_class, extra = eval_one_epoch(model, val_loader, device)
         print(f"Epoch {epoch:03d}  train loss={train_loss:.4f} acc={train_acc:.3f}  val loss={val_loss:.4f} acc={val_acc:.3f}")
+        print(f"    edit_dist={extra['edit_distance']:.3f}  "
+              f"seg_f1@10={extra['segmental_f1'][0.1]:.3f}  "
+              f"seg_f1@25={extra['segmental_f1'][0.25]:.3f}  "
+              f"seg_f1@50={extra['segmental_f1'][0.5]:.3f}")
         per_class_metrics = {}
         for name, (acc, f1) in zip(CLASS_NAMES, per_class):
             acc_str = f"{acc:.3f}" if not math.isnan(acc) else " n/a"
@@ -167,6 +182,8 @@ def main():
                                        "f1": None if math.isnan(f1) else round(f1, 4)}
         logger.log_epoch(epoch, {"train_loss": round(train_loss, 4), "train_acc": round(train_acc, 4),
                                   "val_loss": round(val_loss, 4), "val_acc": round(val_acc, 4),
+                                  "edit_distance": extra["edit_distance"],
+                                  "segmental_f1": extra["segmental_f1"],
                                   "per_class": per_class_metrics})
 
         if val_loss < best_val:
