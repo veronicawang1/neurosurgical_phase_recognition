@@ -74,22 +74,45 @@ def _per_class_stats(logits, labels, num_classes):
     return tp, fp, fn
 
 
-def run_train(model, loader, optimizer, device, class_weights=None):
+def attn_entropy_loss(all_attn):
+    loss = 0.0
+    for attn in all_attn:
+        eps = 1e-8
+        ent = -(attn * (attn + eps).log()).sum(-1)
+        loss += -ent.mean()
+    return loss / len(all_attn)
+
+
+def attn_smoothness_loss(all_attn):
+    loss = 0.0
+    for attn in all_attn:
+        diff = attn[:, :, 1:, :] - attn[:, :, :-1, :]
+        loss += (diff ** 2).mean()
+    return loss / len(all_attn)
+
+
+def run_train(model, loader, optimizer, device, class_weights=None,
+              attn_reg_weight=0.0, attn_reg_mode="entropy"):
     model.train()
     total_loss, correct, total = 0, 0, 0
     for feats, labels in loader:
         feats, labels = feats.to(device), labels.to(device)
-        logits, _ = model(feats)
-        loss = F.cross_entropy(
+        logits, all_attn = model(feats)
+        cls_loss = F.cross_entropy(
             logits.reshape(-1, logits.shape[-1]),
             labels.reshape(-1),
             weight=class_weights,
             ignore_index=-100,
         )
+        if attn_reg_weight > 0:
+            reg = attn_entropy_loss(all_attn) if attn_reg_mode == "entropy" else attn_smoothness_loss(all_attn)
+            loss = cls_loss + attn_reg_weight * reg
+        else:
+            loss = cls_loss
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        total_loss += loss.item()
+        total_loss += cls_loss.item()
         c, n = _acc(logits, labels)
         correct += c
         total += n
@@ -172,6 +195,8 @@ def main():
                         help="frame: leaky window split (debug); video: honest held-out video split")
     parser.add_argument("--log_dir", default="logs")
     parser.add_argument("--run_name", default="transformer_framelevel")
+    parser.add_argument("--attn_reg_weight", type=float, default=0.0)
+    parser.add_argument("--attn_reg_mode", choices=["entropy", "smooth"], default="entropy")
     args = parser.parse_args()
 
     torch.backends.cudnn.enabled = False
@@ -225,7 +250,9 @@ def main():
 
     for epoch in range(1, args.epochs + 1):
         train_loss, train_acc = run_train(model, train_loader, optimizer, device,
-                                          class_weights=class_weights)
+                                          class_weights=class_weights,
+                                          attn_reg_weight=args.attn_reg_weight,
+                                          attn_reg_mode=args.attn_reg_mode)
         val_loss, val_acc, per_class = val_fn(model)
         print(f"Epoch {epoch:03d}  train loss={train_loss:.4f} acc={train_acc:.3f}  "
               f"val loss={val_loss:.4f} acc={val_acc:.3f}")
