@@ -323,13 +323,19 @@ def main():
         bp, bg = apply_boundary_mask(extra["all_preds"], extra["all_gts"], args.boundary_ignore_secs)
         boundary_acc = sum(p == g for p, g in zip(bp, bg)) / len(bp) if bp else 0.0
         print(f"    boundary_aware_acc={boundary_acc:.3f} (ignoring {args.boundary_ignore_secs}s around transitions)")
-        logger.log_epoch(epoch, {"train_loss": round(train_loss, 4), "train_acc": round(train_acc, 4),
-                                  "val_loss": round(val_loss, 4), "val_acc": round(val_acc, 4),
-                                  "edit_distance": extra["edit_distance"],
-                                  "segmental_f1": extra["segmental_f1"],
-                                  "boundary_aware_acc": round(boundary_acc, 4),
-                                  "boundary_ignore_secs": args.boundary_ignore_secs,
-                                  "per_class": per_class_metrics})
+        epoch_metrics = {"train_loss": round(train_loss, 4), "train_acc": round(train_acc, 4),
+                         "val_loss": round(val_loss, 4), "val_acc": round(val_acc, 4),
+                         "edit_distance": extra["edit_distance"],
+                         "segmental_f1": extra["segmental_f1"],
+                         "boundary_aware_acc": round(boundary_acc, 4),
+                         "boundary_ignore_secs": args.boundary_ignore_secs,
+                         "per_class": per_class_metrics}
+        if "viterbi_edit_dist" in extra:
+            epoch_metrics["viterbi_edit_dist"] = extra["viterbi_edit_dist"]
+            epoch_metrics["viterbi_seg_f1"] = extra["viterbi_seg_f1"]
+            epoch_metrics["smooth_edit_dist"] = extra["smooth_edit_dist"]
+            epoch_metrics["smooth_seg_f1"] = extra["smooth_seg_f1"]
+        logger.log_epoch(epoch, epoch_metrics)
 
         if val_loss < best_val:
             best_val = val_loss
