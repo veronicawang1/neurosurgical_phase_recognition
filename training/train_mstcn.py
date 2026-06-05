@@ -51,12 +51,15 @@ def _per_class_stats(logits, labels, num_classes):
 
 
 def train_one_epoch(model, loader, optimizer, device, class_weights=None,
-                    grad_clip=1.0, label_smoothing=0.1):
+                    grad_clip=1.0, label_smoothing=0.1, feature_noise=0.1):
     model.train()
     total_loss, correct, total = 0, 0, 0
     for features, labels, padding_mask in loader:
         features = features.to(device)
         labels = labels.to(device)
+
+        if feature_noise > 0:
+            features = features + torch.randn_like(features) * feature_noise
 
         _, all_stage_logits = model(features)
 
@@ -165,8 +168,10 @@ def main():
     parser.add_argument("--num_classes", type=int, default=4)
     parser.add_argument("--num_stages", type=int, default=2)
     parser.add_argument("--num_layers", type=int, default=8)
-    parser.add_argument("--num_filters", type=int, default=64)
+    parser.add_argument("--num_filters", type=int, default=128)
     parser.add_argument("--dropout", type=float, default=0.5)
+    parser.add_argument("--feature_noise", type=float, default=0.1,
+                        help="Std of Gaussian noise added to features during training (0 to disable)")
     parser.add_argument("--checkpoint_dir", default="checkpoints")
     parser.add_argument("--log_dir", default="logs")
     parser.add_argument("--run_name", default="mstcn")
@@ -213,7 +218,7 @@ def main():
         num_filters=args.num_filters, num_classes=args.num_classes,
         dropout=args.dropout,
     ).to(device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-3)
 
     warmup = torch.optim.lr_scheduler.LinearLR(
         optimizer, start_factor=0.1, end_factor=1.0, total_iters=args.warmup_epochs)
@@ -233,6 +238,7 @@ def main():
             class_weights=class_weights,
             grad_clip=args.grad_clip,
             label_smoothing=args.label_smoothing,
+            feature_noise=args.feature_noise,
         )
         scheduler.step()
         val_loss, val_acc, per_class, extra = eval_one_epoch(
