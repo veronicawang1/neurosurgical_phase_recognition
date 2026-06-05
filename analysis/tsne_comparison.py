@@ -58,9 +58,11 @@ f_finetuned, l_finetuned = load_features_and_labels(FINETUNED_DIR, LABELS_DIR, M
 
 print(f"Frozen: {len(f_frozen)} frames  |  Fine-tuned: {len(f_finetuned)} frames")
 print("Running t-SNE on frozen features...")
-tsne_frozen    = TSNE(n_components=2, perplexity=40, random_state=42, n_iter=1000).fit_transform(f_frozen)
+import sklearn
+_tsne_kwargs = {"max_iter": 1000} if tuple(int(x) for x in sklearn.__version__.split(".")[:2]) >= (1, 4) else {"n_iter": 1000}
+tsne_frozen    = TSNE(n_components=2, perplexity=40, random_state=42, **_tsne_kwargs).fit_transform(f_frozen)
 print("Running t-SNE on fine-tuned features...")
-tsne_finetuned = TSNE(n_components=2, perplexity=40, random_state=42, n_iter=1000).fit_transform(f_finetuned)
+tsne_finetuned = TSNE(n_components=2, perplexity=40, random_state=42, **_tsne_kwargs).fit_transform(f_finetuned)
 
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 for ax, embed, labels, title in zip(
