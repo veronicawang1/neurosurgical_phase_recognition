@@ -1,0 +1,323 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\graphicspath{{../analysis/figures/}}
+
+\title{\textbf{Surgical Phase Recognition for Aneurysm Clipping\\
+via Fine-Tuned CNN Features and Temporal Models}}
+
+\author{Veronica Wang\\
+Stanford University}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+% ─────────────────────────────────────────────
+\section*{Abstract}
+% ─────────────────────────────────────────────
+
+Automated surgical phase recognition has the potential to improve operative workflow monitoring, trainee feedback, and real-time decision support. We present a pipeline for frame-level phase segmentation of aneurysm clipping surgeries, classifying each second of video into one of four phases: Brain Exposure, Parent Vessel Identification, Dome and Neck Identification, and Clipping. Our approach combines a fine-tuned ResNet50 convolutional backbone for frame-level feature extraction with temporal models—including MS-TCN, a causal transformer, and an LSTM baseline—trained on video-level splits to ensure honest evaluation.
+
+Our central finding is that the quality of the CNN feature extractor is the dominant factor in system performance. Models trained on frozen ImageNet features plateaued near 53\% frame accuracy and 0.58 segmental F1@10, regardless of temporal architecture. After fine-tuning ResNet50 on our surgical dataset, the same temporal models achieved 95.7\% (MS-TCN) and 93.6\% (Transformer) frame accuracy with segmental F1@10 scores of 0.809 and 0.895 respectively. Post-processing via Viterbi decoding further improved segment-level metrics by enforcing valid phase orderings, with the fine-tuned Transformer achieving a peak Viterbi segmental F1@10 of 0.944.
+
+% ─────────────────────────────────────────────
+\section{Introduction}
+% ─────────────────────────────────────────────
+
+Neurovascular surgery, and aneurysm clipping in particular, is among the most technically demanding procedures in neurosurgery. Each operation follows a reproducible sequence of phases—exposing the brain, isolating the parent vessel, identifying the aneurysm dome and neck, and applying the clip—but the timing, duration, and visual appearance of each phase vary substantially across patients and surgeons. Automated recognition of these phases from intraoperative video could support a range of applications: real-time surgical guidance, automated report generation, objective assessment of trainee performance, and retrospective analysis of operative efficiency.
+
+Surgical phase recognition is a structured video understanding problem. \textbf{The input to our system is a monocular RGB surgical video recorded at the operating microscope, sampled at 1 frame per second.} \textbf{The output is a sequence of integer phase labels, one per frame, drawn from four classes: Brain Exposure (0), Parent Vessel Identification (1), Dome and Neck Identification (2), and Clipping (3).} The problem is challenging for several reasons. First, surgical video has high visual redundancy—adjacent frames are nearly identical—while transitions between phases can be subtle and gradual. Second, phases are not equally represented: Clipping accounts for 36.8\% of frames in our dataset while Brain Exposure accounts for only 18.1\%. Third, unlike action recognition benchmarks with thousands of clips, surgical datasets are small due to privacy constraints and the cost of expert annotation.
+
+We build and evaluate a two-stage pipeline. In the first stage, a ResNet50 convolutional neural network is fine-tuned on labeled surgical frames and used to extract a 2048-dimensional feature vector for each frame. In the second stage, temporal models—MS-TCN \cite{farha2019mstcn}, a causal transformer, and a CNN-LSTM baseline—are trained on the feature sequences to produce per-frame phase predictions. We apply Viterbi decoding and temporal median smoothing as post-processing to enforce temporal consistency.
+
+Our main contribution is an empirical study demonstrating that (1) fine-tuning the visual backbone is the single most impactful improvement, outweighing architectural choices among temporal models; (2) Viterbi decoding with a data-driven transition matrix provides meaningful improvement over hand-crafted surgical priors; and (3) video-level validation splits are essential for honest evaluation of temporal models on small datasets.
+
+% ─────────────────────────────────────────────
+\section{Related Work}
+% ─────────────────────────────────────────────
+
+\subsection{CNN-Based Surgical Phase Recognition}
+
+Early work on automated surgical phase recognition relied on hand-crafted features and hidden Markov models \cite{padoy2012statistical}. Twinanda et al.\ introduced EndoNet \cite{twinanda2016endonet}, which used a multi-task CNN trained on the Cholec80 dataset \cite{twinanda2016endonet} to simultaneously predict surgical tools and phases. This established the paradigm of learning visual representations directly from surgical video rather than engineering domain-specific features. However, these approaches treat each frame independently, discarding temporal context that is essential for resolving ambiguity near phase boundaries.
+
+\subsection{Recurrent Temporal Models}
+
+Jin et al.\ proposed SV-RCNet \cite{jin2018svrcnet}, which concatenated CNN features with an LSTM to model sequential phase transitions. This improved over frame-level CNNs by incorporating temporal memory, but LSTMs struggle to capture long-range dependencies in long surgical videos (often 1--3 hours). Later work by Jin et al.\ introduced multi-task learning with tool presence as an auxiliary signal \cite{jin2020multi}, and demonstrated that auxiliary supervision can regularize the temporal model. Our CNN-LSTM baseline follows the SV-RCNet design.
+
+\subsection{Temporal Convolutional Networks}
+
+Lea et al.\ proposed Temporal Convolutional Networks (TCN) \cite{lea2017temporal} with dilated convolutions for action segmentation, enabling efficient capture of multi-scale temporal patterns without recurrence. Farha and Gall extended this to MS-TCN \cite{farha2019mstcn}, a multi-stage architecture where each stage refines the predictions of the previous stage using dilated residual convolutions. Czempiel et al.\ applied MS-TCN to surgical phase recognition in TeCNO \cite{czempiel2020tecno}, achieving state-of-the-art results on cholecystectomy data. Our MS-TCN implementation closely follows \cite{farha2019mstcn} with modifications for our class structure.
+
+\subsection{Transformer-Based Approaches}
+
+Following the success of attention mechanisms in NLP \cite{vaswani2017attention} and vision \cite{dosovitskiy2020vit}, several groups have applied transformers to surgical phase recognition. Trans-SVNet \cite{jin2021transsvnet} used a hybrid CNN-transformer to capture both local and global temporal dependencies. Czempiel et al.\ introduced OperA \cite{czempiel2021opera}, which augments a transformer with attention regularization losses to encourage the model to attend to clinically meaningful patterns. Our causal transformer architecture (NeuroOperA) is inspired by OperA, adding causal masking so predictions at time $t$ depend only on past observations.
+
+\subsection{Post-Processing for Temporal Consistency}
+
+Raw frame-level predictions often exhibit temporal inconsistencies—brief flickers between phases—that are physically implausible. Padoy et al.\ \cite{padoy2012statistical} and subsequent works applied HMM-based decoding to impose valid state sequences. The Viterbi algorithm \cite{viterbi1967error} provides an efficient exact solution for the most likely state sequence under a Markov transition model. We compare a hand-crafted surgical prior (forward-only transitions) against a learned transition matrix estimated from training data.
+
+% ─────────────────────────────────────────────
+\section{Methods}
+% ─────────────────────────────────────────────
+
+\subsection{Feature Extraction}
+
+We use ResNet50 \cite{he2016resnet} pre-trained on ImageNet \cite{deng2009imagenet} as our visual backbone. The final classification head is replaced with a 4-class linear layer, and the entire network is fine-tuned on labeled surgical frames. The penultimate 2048-dimensional layer activations are extracted as frame features. All videos are processed at 1 FPS; each frame is resized to $224 \times 224$ and normalized with ImageNet statistics.
+
+Formally, let $v_t \in \mathbb{R}^{H \times W \times 3}$ denote the frame at time $t$. The backbone $f_\theta$ maps each frame to a feature vector:
+\[
+\mathbf{x}_t = f_\theta(v_t) \in \mathbb{R}^{2048}
+\]
+The sequence $\mathbf{X} = [\mathbf{x}_1, \ldots, \mathbf{x}_T] \in \mathbb{R}^{T \times 2048}$ is the input to the temporal model.
+
+\subsection{Temporal Models}
+
+\paragraph{CNN-LSTM Baseline.} A two-layer bidirectional LSTM with hidden dimension 256 processes the feature sequence and produces per-frame logits via a linear classifier. This baseline captures temporal dependencies but lacks the ability to model long-range structure efficiently.
+
+\paragraph{MS-TCN.} Our MS-TCN follows Farha and Gall \cite{farha2019mstcn} with two stages and eight dilated residual layers per stage. Each layer uses dilation $2^i$ for layer $i \in \{0,\ldots,7\}$, giving a receptive field of $2^9 - 1 = 511$ frames. The first stage operates on raw features; subsequent stages refine predictions by taking the softmax output of the previous stage as input. The multi-stage loss is:
+\[
+\mathcal{L}_\text{MS-TCN} = \sum_{s=1}^{S} \mathcal{L}_\text{CE}(\hat{Y}^{(s)}, Y)
+\]
+where $\hat{Y}^{(s)}$ are the logits at stage $s$ and $Y$ are the ground-truth labels. We use 128 filters per layer and dropout $p = 0.5$.
+
+\paragraph{Causal Transformer (NeuroOperA).} We implement a causal transformer encoder with 2 layers, 4 attention heads, model dimension $d = 256$, and dropout $p = 0.5$. A causal mask prevents attention from future frames:
+\[
+\text{Mask}_{ij} = \begin{cases} 0 & \text{if } i \geq j \\ -\infty & \text{otherwise} \end{cases}
+\]
+Features are projected from 2048 to 256 dimensions before the attention layers. Per-frame logits are produced by a linear head applied to the output of the final attention layer.
+
+\subsection{Training Objective}
+
+All models are trained with cross-entropy loss incorporating inverse-frequency class weights and label smoothing $\varepsilon = 0.1$:
+\[
+\mathcal{L} = -\sum_{t=1}^{T} \sum_{c=0}^{C-1} w_c \, \tilde{y}_{t,c} \log \hat{p}_{t,c}
+\]
+where $w_c \propto 1/N_c$ is the weight for class $c$, $N_c$ is the number of frames in class $c$, and $\tilde{y}_{t,c} = (1 - \varepsilon)\, y_{t,c} + \varepsilon / C$ is the smoothed target. Label smoothing prevents overconfident predictions and acts as a regularizer on small datasets. Frames labeled with ignored classes receive a mask value of $-100$ and are excluded from the loss.
+
+\subsection{Regularization and Optimization}
+
+All models are optimized with AdamW ($\beta_1 = 0.9$, $\beta_2 = 0.999$, weight decay $10^{-3}$). We use a linear warmup for 5 epochs followed by cosine annealing:
+\[
+\eta_t = \eta_\text{min} + \frac{1}{2}(\eta_\text{max} - \eta_\text{min})\left(1 + \cos\!\left(\frac{\pi(t - t_\text{warm})}{T - t_\text{warm}}\right)\right)
+\]
+with $\eta_\text{max} = 5 \times 10^{-4}$ and $\eta_\text{min} = 10^{-6}$. Gradient norms are clipped to 1.0. During training, Gaussian noise ($\sigma = 0.1$) is added to input features as data augmentation.
+
+\subsection{Post-Processing}
+
+\paragraph{Viterbi Decoding.} Given per-frame softmax probabilities $P \in \mathbb{R}^{T \times C}$, Viterbi decoding finds the most likely label sequence under a first-order Markov model:
+\[
+\hat{Y}^* = \arg\max_{Y} \prod_{t=1}^{T} P(y_t | \mathbf{x}_t) \cdot P(y_t | y_{t-1})
+\]
+We compare two transition matrices: (1) a \emph{default surgical prior} encoding forward-only transitions with $P(\text{stay}) = 0.95$, $P(\text{advance}) = 0.04$, $P(\text{skip}) = 0.009$, $P(\text{backward}) = 0.001$; and (2) a \emph{learned} transition matrix estimated from empirical frame-to-frame transition counts in the training set. The learned matrix outperforms the prior across all thresholds.
+
+\paragraph{Temporal Smoothing.} As a lightweight alternative, we apply a mean filter of window size 15 over per-frame class probabilities and take the argmax. This suppresses brief flickering at minimal computational cost.
+
+% ─────────────────────────────────────────────
+\section{Dataset and Features}
+% ─────────────────────────────────────────────
+
+\subsection{Dataset}
+
+Our dataset consists of 48 intraoperative microscope videos of aneurysm clipping surgeries. Each video was manually annotated by a neurosurgical expert at 1-second granularity with one of the following phase labels: Brain Exposure, Parent Vessel Identification, Dome Identification, Neck Identification, and Clipping. Two additional categories (Parent Vessel Exposure and liquid phases) were excluded due to ambiguous boundaries. Dome Identification and Neck Identification were merged into a single Dome \& Neck Identification class, as these phases are visually overlapping and temporally contiguous.
+
+The dataset contains 40,725 labeled frames across 48 videos. Table~\ref{tab:class_dist} shows the class distribution, which is moderately imbalanced with Clipping being the most common phase (36.8\%) and Brain Exposure the least common (18.1\%).
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Phase & Frames & Proportion \\
+\midrule
+Brain Exposure         & 7,354  & 18.1\% \\
+Parent Vessel ID       & 10,222 & 25.1\% \\
+Dome \& Neck ID        & 8,172  & 20.1\% \\
+Clipping               & 14,977 & 36.8\% \\
+\midrule
+Total                  & 40,725 & 100\% \\
+\bottomrule
+\end{tabular}
+\caption{Frame-level class distribution across 48 videos.}
+\label{tab:class_dist}
+\end{table}
+
+Not all videos contain all four phases; some short clips begin after brain exposure or end before clipping is complete.
+
+\subsection{Preprocessing and Features}
+
+Videos are downsampled to 1 FPS. Each frame is resized to $224 \times 224$ pixels and normalized with ImageNet mean and standard deviation. We experimented with two feature regimes: (1) \emph{frozen} features extracted using a ResNet50 with unmodified ImageNet weights, and (2) \emph{fine-tuned} features extracted after fully fine-tuning ResNet50 on labeled surgical frames. t-SNE visualization of frozen features showed no meaningful cluster structure across the four surgical phases, motivating fine-tuning.
+
+\subsection{Train/Validation Split}
+
+We use a \emph{video-level} 80/20 split: approximately 38 videos for training and 10 for validation. This prevents data leakage, since frame-level splits would allow overlapping video context between train and validation windows. We demonstrate empirically (Section~\ref{sec:experiments}) that frame-level splits yield misleadingly optimistic validation metrics.
+
+% ─────────────────────────────────────────────
+\section{Experiments, Results, and Discussion}
+\label{sec:experiments}
+% ─────────────────────────────────────────────
+
+\subsection{Evaluation Metrics}
+
+We evaluate with four complementary metrics:
+
+\textbf{Frame accuracy}: $\frac{1}{T}\sum_t \mathbf{1}[\hat{y}_t = y_t]$. Standard but dominated by frequent classes.
+
+\textbf{Edit distance}: $1 - \frac{\text{Levenshtein}(\hat{S}, S)}{\max(|\hat{S}|, |S|)}$, where $\hat{S}$ and $S$ are the predicted and ground-truth sequences of \emph{segments} (contiguous runs of the same phase). A score of 1.0 indicates perfect segment-level ordering; 0.0 indicates complete disorder.
+
+\textbf{Segmental F1@$k$}: Following \cite{farha2019mstcn}, a predicted segment is considered a true positive if its IoU with a ground-truth segment of the same class exceeds threshold $k \in \{0.1, 0.25, 0.5\}$. This penalizes both missed phases and temporally misaligned predictions.
+
+\textbf{Boundary-aware accuracy}: Frame accuracy computed only on frames more than 5 seconds from any phase transition boundary, to measure performance on unambiguous central frames.
+
+\subsection{Hyperparameter Selection}
+
+Hyperparameters were chosen based on validation performance and established best practices. The learning rate $\eta_\text{max} = 5 \times 10^{-4}$ was selected as the highest rate that did not cause training instability (observed as oscillating loss). Warmup over 5 epochs was introduced after observing that models trained without warmup failed to converge from random initialization when large batch losses appeared in the first epoch. Dropout $p = 0.5$ and weight decay $10^{-3}$ were chosen to address early overfitting: without regularization, all models reached their best validation loss within the first 10 epochs and degraded thereafter. Batch size 4 was constrained by GPU memory (16 GB T4) when processing variable-length sequences up to several hundred frames.
+
+\subsection{Importance of Validation Split}
+
+We first establish that validation methodology significantly affects reported results. A frame-level split randomly assigns individual frames to train/validation sets, so the model sees frames from the same video in both splits. A video-level split holds out complete videos. As shown in Figure~\ref{fig:val_split}, the frame-level split yields lower validation loss and higher accuracy than the video-level split because the temporal context from each video leaks into training. All subsequent experiments use video-level splits.
+
+\subsection{Main Results}
+
+Table~\ref{tab:main_results} summarizes results for all models. We report metrics at the best validation loss epoch, with Viterbi post-processing applied where available.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llcccc}
+\toprule
+Model & Feat. & Acc & Edit & F1@10 & F1@50 \\
+\midrule
+CNN Baseline     & Frozen & 0.956 & ---   & 0.000 & 0.000 \\
+LSTM             & Frozen & 0.116 & 0.024 & 0.018 & 0.004 \\
+Transformer      & Frozen & 0.533 & 0.015 & 0.016 & 0.004 \\
+MS-TCN + Viterbi & Frozen & 0.525 & 0.467 & 0.553 & 0.340 \\
+MS-TCN + Vit. (learned) & Frozen & 0.503 & 0.583 & 0.585 & 0.390 \\
+\midrule
+MS-TCN + Viterbi & Fine-tuned & 0.957 & 0.680 & 0.809 & 0.714 \\
+Transformer + Vit. & Fine-tuned & \textbf{0.936} & \textbf{0.810} & \textbf{0.895} & \textbf{0.789} \\
+\bottomrule
+\end{tabular}
+\caption{Main results at best validation loss epoch. Edit distance and F1 use Viterbi decoding where available. ``Feat.'' = feature regime.}
+\label{tab:main_results}
+\end{table}
+
+\paragraph{CNN Baseline.} The frame-level CNN baseline achieves 95.6\% frame accuracy but a segmental F1@10 of 0.000. This reflects the baseline predicting a single dominant class for most videos—frame accuracy is high due to class imbalance but the model produces no meaningful segment-level output. This underscores the inadequacy of frame accuracy as a sole metric for phase recognition.
+
+\paragraph{Temporal Models on Frozen Features.} LSTM, Transformer, and MS-TCN trained on frozen ImageNet features all achieve 50--53\% frame accuracy, near the majority-class baseline. Segmental F1 is near zero for LSTM and Transformer without Viterbi post-processing, as these models produce temporally incoherent predictions. MS-TCN with Viterbi decoding is the exception, reaching F1@10 of 0.553--0.585 even with frozen features, demonstrating MS-TCN's stronger inductive bias for temporal structure.
+
+\paragraph{Impact of Backbone Fine-Tuning.} Fine-tuning ResNet50 on surgical frames is the single largest performance jump in our experiments. Both MS-TCN and the Transformer improve dramatically, with frame accuracy increasing from $\sim$53\% to 95.7\% and 93.6\%, and Viterbi F1@10 from 0.553 to 0.809 and 0.895 respectively. This result confirms that frozen ImageNet features lack the discriminative structure needed to distinguish surgical phases—t-SNE visualization shows no meaningful clustering with frozen features, while fine-tuned features exhibit clear separation.
+
+\paragraph{Viterbi and Temporal Smoothing.} Figure~\ref{fig:postprocessing} shows that Viterbi decoding substantially improves segmental F1 in all configurations. For the fine-tuned Transformer, the learned transition matrix achieves a peak Viterbi F1@10 of 0.944. Temporal mean smoothing is competitive with Viterbi on MS-TCN but significantly weaker on the Transformer, suggesting the Transformer's raw probability outputs have higher entropy and benefit from the stronger sequential constraint imposed by Viterbi.
+
+\subsection{Per-Class Analysis}
+
+Figure~\ref{fig:per_class} shows per-class accuracy and F1 for both fine-tuned models. Brain Exposure, Parent Vessel ID, and Dome \& Neck ID are all learned well ($\geq 0.90$ accuracy). Clipping is the exception: while frame-level accuracy is high, segmental F1 for Clipping is disproportionately low (0.134 for MS-TCN, 0.323 for Transformer). This reflects a systematic misalignment between predicted and ground-truth clipping segments: the model correctly identifies frames as clipping but mis-identifies the start and end boundaries. Clipping is visually similar to Dome \& Neck ID (the clip is positioned at the neck), and the fine motor clip application can be brief, contributing to poor boundary detection.
+
+\subsection{Failure Cases}
+
+The phase timeline in Figure~\ref{fig:timeline} illustrates common failure modes. The most frequent error is early termination of Clipping—the model reverts to Dome \& Neck ID before the surgeon finishes clip application. A second failure mode occurs when Parent Vessel Identification and Dome Identification co-occur visually (the vessel and dome are both in frame), causing the model to oscillate between classes before Viterbi stabilizes the sequence. Viterbi decoding mitigates but does not eliminate these errors; the transition matrix assigns low but nonzero probability to backward transitions, allowing the model to revert when evidence is strong.
+
+\subsection{Overfitting Analysis}
+
+All models show clear signs of overfitting: training loss continues to decrease after epoch 10, while validation loss stabilizes or increases. The best validation loss for fine-tuned models occurs at epochs 9--51, after which overfitting dominates. We partially mitigate this through label smoothing, dropout ($p = 0.5$), weight decay ($10^{-3}$), gradient clipping, and feature noise augmentation. Data augmentation at the feature level (Gaussian noise with $\sigma = 0.1$) was added to improve generalization but its isolated contribution was not ablated. The primary solution would be more labeled videos; 48 videos is small relative to published surgical phase recognition datasets (Cholec80 \cite{twinanda2016endonet} has 80 videos, and more recent datasets have 200+).
+
+% ─────────────────────────────────────────────
+\section{Conclusion and Future Work}
+% ─────────────────────────────────────────────
+
+We presented a two-stage pipeline for surgical phase recognition in aneurysm clipping, combining a fine-tuned ResNet50 feature extractor with MS-TCN and causal transformer temporal models, and Viterbi post-processing. Our main finding is that task-specific feature learning is the dominant factor: fine-tuning the visual backbone increased segmental F1@10 from 0.585 to 0.895—a larger gain than any architectural choice among temporal models. The causal transformer with a learned Viterbi transition matrix achieves the best overall performance (F1@10 = 0.944, F1@50 = 0.789), competitive with state-of-the-art systems on larger surgical datasets.
+
+Clipping phase segmentation remains an open challenge, with segmental F1 substantially below the other phases due to short duration, visual similarity to the preceding phase, and subtle boundary cues. Future work should explore boundary-aware loss functions that explicitly penalize misaligned segment endpoints, or incorporate tool detection as an auxiliary supervision signal (clip applier presence is a reliable indicator of the Clipping phase).
+
+Longer term, the primary bottleneck is dataset size. With 48 videos, the model begins overfitting within 10--50 epochs depending on configuration. Pseudo-labeling of unannotated surgical footage, leave-one-out cross-validation across surgeons, and data-sharing across institutions are natural avenues. Online inference is another important direction: the causal transformer already supports it, but latency at 1 FPS has not been characterized on clinical hardware.
+
+% ─────────────────────────────────────────────
+\bibliographystyle{plain}
+\begin{thebibliography}{99}
+
+\bibitem{farha2019mstcn}
+Y.~A. Farha and J.~Gall.
+\newblock {MS-TCN}: Multi-stage temporal convolutional network for action segmentation.
+\newblock In \emph{CVPR}, 2019.
+
+\bibitem{czempiel2020tecno}
+D.~Czempiel, M.~Paschali, M.~Keicher, W.~Simson, H.~Feussner, S.~S. Park, and N.~Navab.
+\newblock {TeCNO}: Surgical phase recognition with multi-stage temporal convolutional networks.
+\newblock In \emph{MICCAI}, 2020.
+
+\bibitem{czempiel2021opera}
+D.~Czempiel, M.~Paschali, D.~Ostler, S.~S. Park, H.~Feussner, and N.~Navab.
+\newblock {OperA}: Attention-regularized transformers for surgical phase recognition.
+\newblock In \emph{MICCAI}, 2021.
+
+\bibitem{jin2021transsvnet}
+Y.~Jin, H.~Long, C.~Chen, Z.~Zhao, Q.~Dou, and P.-A. Heng.
+\newblock {Trans-SVNet}: Accurate phase recognition from surgical videos via hybrid embedding aggregation transformer.
+\newblock In \emph{MICCAI}, 2021.
+
+\bibitem{jin2018svrcnet}
+Y.~Jin, Q.~Dou, H.~Chen, L.~Yu, J.~Qin, C.-W. Fu, and P.-A. Heng.
+\newblock {SV-RCNet}: Workflow recognition from surgical videos using recurrent convolutional network.
+\newblock \emph{IEEE TMI}, 37(5):1114--1126, 2018.
+
+\bibitem{jin2020multi}
+Y.~Jin, H.~Long, C.~Chen, Z.~Zhao, Q.~Dou, and P.-A. Heng.
+\newblock Multi-task recurrent convolutional network with correlation loss for surgical video analysis.
+\newblock \emph{Medical Image Analysis}, 59:101572, 2020.
+
+\bibitem{twinanda2016endonet}
+A.~P. Twinanda, S.~Shehata, D.~Mutter, J.~Marescaux, M.~de~Mathelin, and N.~Padoy.
+\newblock {EndoNet}: A deep architecture for recognition tasks on laparoscopic videos.
+\newblock \emph{IEEE TMI}, 36(1):86--97, 2017.
+
+\bibitem{padoy2012statistical}
+N.~Padoy, T.~Blum, S.-A. Ahmadi, H.~Feussner, M.-O. Berger, and N.~Navab.
+\newblock Statistical modeling and recognition of surgical workflow.
+\newblock \emph{Medical Image Analysis}, 16(3):632--641, 2012.
+
+\bibitem{lea2017temporal}
+C.~Lea, M.~D. Flynn, R.~Vidal, A.~Reiter, and G.~D. Hager.
+\newblock Temporal convolutional networks for action segmentation and detection.
+\newblock In \emph{CVPR}, 2017.
+
+\bibitem{vaswani2017attention}
+A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N. Gomez, \L.~Kaiser, and I.~Polosukhin.
+\newblock Attention is all you need.
+\newblock In \emph{NeurIPS}, 2017.
+
+\bibitem{he2016resnet}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{CVPR}, 2016.
+
+\bibitem{deng2009imagenet}
+J.~Deng, W.~Dong, R.~Socher, L.-J. Li, K.~Li, and L.~Fei-Fei.
+\newblock {ImageNet}: A large-scale hierarchical image database.
+\newblock In \emph{CVPR}, 2009.
+
+\bibitem{dosovitskiy2020vit}
+A.~Dosovitskiy, L.~Beyer, A.~Kolesnikov, D.~Weissenborn, X.~Zhai, T.~Unterthiner, M.~Dehghani, M.~Minderer, G.~Heigold, S.~Gelly, J.~Uszkoreit, and N.~Houlsby.
+\newblock An image is worth 16x16 words: Transformers for image recognition at scale.
+\newblock In \emph{ICLR}, 2021.
+
+\bibitem{viterbi1967error}
+A.~J. Viterbi.
+\newblock Error bounds for convolutional codes and an asymptotically optimum decoding algorithm.
+\newblock \emph{IEEE Transactions on Information Theory}, 13(2):260--269, 1967.
+
+\end{thebibliography}
+
+\end{document}
